@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
@@ -6,35 +6,45 @@ import './styling/landing.css';
 import './styling/login.css';
 import './styling/signup.css';
 
-function App() {
+const App = () => {
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
+
+  // Prevent scroll when modal is open
+  useEffect(() => {
+    document.body.style.overflow = (showLogin || showSignup) ? 'hidden' : 'auto';
+  }, [showLogin, showSignup]);
 
   const handleLoginClick = () => {
     setShowLogin(true);
     setShowSignup(false);
-    document.body.style.overflow = 'hidden';
   };
 
   const handleSignupClick = () => {
     setShowSignup(true);
     setShowLogin(false);
-    document.body.style.overflow = 'hidden';
   };
 
-  const handleClose = () => {
+  const handleCloseModal = () => {
     setShowLogin(false);
     setShowSignup(false);
-    document.body.style.overflow = 'auto';
   };
 
   return (
     <>
       <Landing onLoginClick={handleLoginClick} />
-      {showLogin && <Login onClose={handleClose} onSignupClick={handleSignupClick} />}
-      {showSignup && <Signup onClose={handleClose} />}
+
+      {(showLogin || showSignup) && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <button className="close-button" onClick={handleCloseModal}>×</button>
+            {showLogin && <Login onSignupClick={handleSignupClick} />}
+            {showSignup && <Signup />}
+          </div>
+        </div>
+      )}
     </>
   );
-}
+};
 
 export default App;
