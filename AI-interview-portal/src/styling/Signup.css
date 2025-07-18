@@ -78,16 +78,16 @@
   background-color: #3f51b5;
 }
 
-/* Right image section (as background image) */
 .signup-right {
   flex: 1;
+  min-width: 50%;
+  height: 100%;
   background-image: url('https://images.unsplash.com/photo-1506765515384-028b60a970df');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
 
-/* Close (×) button */
 .close-button {
   position: absolute;
   top: 15px;

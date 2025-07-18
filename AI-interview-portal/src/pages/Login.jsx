@@ -1,13 +1,21 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom'; // ✅ Step 1
 
 const Login = ({ onClose, onSignupClick }) => {
+  const navigate = useNavigate(); // ✅ Step 2
+
+  const handleLogin = () => {
+    onClose(); // close modal
+    navigate('/dashboard'); // redirect to dashboard
+  };
+
   return (
     <div className="modal">
       <div className="modal-container">
         <div className="modal-left">
           <h1 className="modal-title">Welcome!</h1>
           <p className="modal-desc">
-            Fanny pack hexagon food truck, street art waistcoat kitsch.
+            Step into your future with AI-powered mock interviews and personalized feedback to sharpen your skills.
           </p>
 
           <div className="input-block">
@@ -22,7 +30,7 @@ const Login = ({ onClose, onSignupClick }) => {
 
           <div className="modal-buttons">
             <a href="#">Forgot your password?</a>
-            <button className="input-button">Login</button>
+            <button className="input-button" onClick={handleLogin}>Login</button> {/* ✅ Updated */}
           </div>
 
           <p className="sign-up">
