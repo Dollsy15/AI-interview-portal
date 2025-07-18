@@ -5,7 +5,7 @@ const Landing = ({ onLoginClick }) => {
     <div className="landing-container">
       <div className="landing-content">
         <h1>Welcome to AI Interview Portal</h1>
-        <p>Scroll down to explore. Click below to login.</p>
+        <p>Scroll down to explore. </p>
         <button onClick={onLoginClick}>Click here to Login</button>
       </div>
     </div>

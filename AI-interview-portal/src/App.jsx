@@ -10,6 +10,7 @@ import './styling/Signup.css';
 const App = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [showLogin, setShowLogin] = useState(true);
+  const [hasModalShown, setHasModalShown] = useState(false); 
 
   useEffect(() => {
     document.body.style.overflow = modalOpen ? 'hidden' : 'auto';
@@ -17,20 +18,22 @@ const App = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > window.innerHeight / 3 && !modalOpen) {
+      if (window.scrollY > window.innerHeight / 3 && !modalOpen && !hasModalShown) {
         setModalOpen(true);
         setShowLogin(true);
+        setHasModalShown(true); 
       }
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [modalOpen]);
+  }, [modalOpen, hasModalShown]);
 
   const handleLoginClick = () => {
     if (!modalOpen) {
       setModalOpen(true);
       setShowLogin(true);
+      setHasModalShown(true); 
     }
   };
 
