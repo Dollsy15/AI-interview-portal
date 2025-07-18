@@ -1,4 +1,5 @@
 import React from 'react';
+import '../styling/signup.css';
 
 const Signup = ({ onClose }) => {
   return (
@@ -22,12 +23,7 @@ const Signup = ({ onClose }) => {
           </form>
         </div>
 
-        <div className="signup-right">
-          <img
-            src="https://images.unsplash.com/photo-1506765515384-028b60a970df"
-            alt="signup-visual"
-          />
-        </div>
+        <div className="signup-right"></div>
 
         <button className="close-button" onClick={onClose}>×</button>
       </div>
