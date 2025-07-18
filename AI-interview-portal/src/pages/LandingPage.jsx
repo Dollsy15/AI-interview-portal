@@ -7,24 +7,39 @@ const LandingPage = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > window.innerHeight / 2) {
+      if (window.scrollY > window.innerHeight / 3 && !showModal) {
         setShowModal(true);
+        document.body.style.overflow = "hidden";
       }
     };
+
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      document.body.style.overflow = "auto";
+    };
+  }, [showModal]);
+
+  const closeModal = () => {
+    setShowModal(false);
+    document.body.style.overflow = "auto";
+  };
 
   return (
-    <div className="landing-container">
+    <div className="landing-page">
       <div className="scroll-section">
-        <h1>SCROLL DOWN</h1>
-        <span className="arrow">⬇</span>
+        <h1>Scroll Down</h1>
+        <div className="arrow">&#8595;</div>
       </div>
-      <button className="login-fixed" onClick={() => setShowModal(true)}>
-        Click here to login
-      </button>
-      {showModal && <Login onClose={() => setShowModal(false)} />}
+
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <button className="close-button" onClick={closeModal}>×</button>
+            <Login />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
