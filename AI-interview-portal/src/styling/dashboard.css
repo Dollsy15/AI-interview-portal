@@ -1,0 +1,22 @@
+/* styling/dashboard.css */
+.dashboard-container {
+  text-align: center;
+  margin-top: 100px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.start-btn {
+  padding: 12px 24px;
+  background-color: #0077ff;
+  color: white;
+  border: none;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background 0.3s ease;
+}
+
+.start-btn:hover {
+  background-color: #005fe0;
+}

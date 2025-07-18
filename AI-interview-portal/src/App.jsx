@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import Landing from './pages/LandingPage.jsx';
 import Login from './pages/Login.jsx';
 import Signup from './pages/Signup.jsx';
+import Dashboard from './pages/dashboard.jsx';
 
 import './styling/landing.css';
 import './styling/Login.css';
 import './styling/Signup.css';
+import './styling/dashboard.css';
 
 const App = () => {
   const [modalOpen, setModalOpen] = useState(false);
