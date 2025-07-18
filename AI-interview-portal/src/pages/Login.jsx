@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./Login.css";
+import "../styling/login.css";
 
 function Login() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,7 +17,7 @@ function Login() {
   }, [isModalOpen]);
 
   return (
-    <>
+    <div className="scroll-background">
       {showScrollPrompt && (
         <div className="scroll-down">
           Scroll Down to Continue
@@ -27,13 +27,11 @@ function Login() {
         </div>
       )}
 
-      <div className="container"></div>
-
       <div className={`modal ${isModalOpen ? "is-open" : ""}`}>
         <div className="modal-container">
           <div className="modal-left">
             <h1 className="modal-title">Welcome!</h1>
-            <p className="modal-desc">Fanny pack hexagon food truck, street art waistcoat kitsch.</p>
+            <p className="modal-desc">Enter your details below to log in.</p>
             <div className="input-block">
               <label htmlFor="email" className="input-label">Email</label>
               <input type="email" name="email" id="email" placeholder="Email" />
@@ -51,13 +49,10 @@ function Login() {
           <div className="modal-right">
             <img src="https://images.unsplash.com/photo-1512486130939-2c4f79935e4f?auto=format&fit=crop&w=1000&q=80" alt="Welcome" />
           </div>
-          <button className="icon-button close-button" onClick={() => setIsModalOpen(false)}>
-            ✕
-          </button>
+          <button className="icon-button close-button" onClick={() => setIsModalOpen(false)}>✕</button>
         </div>
-        <button className="modal-button">Click here to login</button>
       </div>
-    </>
+    </div>
   );
 }
 

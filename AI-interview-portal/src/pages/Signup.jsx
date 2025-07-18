@@ -1,8 +1,16 @@
+import React from "react";
+import "../styling/signup.css";
+
 function Signup() {
   return (
-    <div style={{ padding: "100px", textAlign: "center" }}>
-      <h2>Signup Page</h2>
-      <p>This is a placeholder. You can design it similarly.</p>
+    <div className="signup-container">
+      <h1>Signup Page</h1>
+      <form>
+        <input type="text" placeholder="Username" />
+        <input type="email" placeholder="Email" />
+        <input type="password" placeholder="Password" />
+        <button type="submit">Sign Up</button>
+      </form>
     </div>
   );
 }
