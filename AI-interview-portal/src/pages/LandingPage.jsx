@@ -1,47 +1,17 @@
-import React, { useEffect, useState } from "react";
-import Login from "./Login";
-import "../styling/landing.css";
+import React from 'react';
 
-const LandingPage = () => {
-  const [showModal, setShowModal] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > window.innerHeight / 3 && !showModal) {
-        setShowModal(true);
-        document.body.style.overflow = "hidden";
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      document.body.style.overflow = "auto";
-    };
-  }, [showModal]);
-
-  const closeModal = () => {
-    setShowModal(false);
-    document.body.style.overflow = "auto";
-  };
-
+const Landing = ({ onLoginClick }) => {
   return (
     <div className="landing-page">
-      <div className="scroll-section">
-        <h1>Scroll Down</h1>
-        <div className="arrow">&#8595;</div>
+      <div className="landing-content">
+        <h1>Welcome to AI Interview Portal</h1>
+        <p>Crack your dream job with AI-powered mock interviews.</p>
+        <button className="login-btn" onClick={onLoginClick}>
+          Click here to Login
+        </button>
       </div>
-
-      {showModal && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <button className="close-button" onClick={closeModal}>×</button>
-            <Login />
-          </div>
-        </div>
-      )}
     </div>
   );
 };
 
-export default LandingPage;
+export default Landing;

@@ -1,183 +1,106 @@
-@import url("https://fonts.googleapis.com/css?family=Nunito:400,600,700");
-
-* {
-  box-sizing: border-box;
-}
-
-body, html {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  font-family: "Nunito", sans-serif;
-  color: rgba(0, 0, 0, 0.7);
-  overflow-y: auto;
-}
-
-.container {
-  height: 200vh;
-  background-image: url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-.signup-container {
-  max-width: 400px;
-  margin: 100px auto;
-  padding: 20px;
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-}
-
-.modal {
+.modal-overlay {
   position: fixed;
+  top: 0;
   left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 60px;
-  background: rgba(51, 51, 51, 0.5);
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(8px);
+  background-color: rgba(0, 0, 0, 0.4);
   display: flex;
-  align-items: center;
   justify-content: center;
-  transition: 0.4s;
-  z-index: 999;
-}
-
-.modal-container {
-  display: flex;
-  max-width: 720px;
-  width: 100%;
-  border-radius: 10px;
-  overflow: hidden;
-  position: absolute;
-  background: #fff;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(100px) scale(0.4);
-  transition: 0.3s;
-}
-
-.modal.is-open {
-  height: 100%;
-  background: rgba(51, 51, 51, 0.85);
-}
-
-.modal.is-open .modal-container {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateY(0) scale(1);
-  transition: 0.6s;
-}
-
-.modal-title {
-  font-size: 26px;
-  margin: 0;
-  font-weight: 400;
-  color: #55311c;
-}
-
-.modal-desc {
-  margin: 6px 0 30px 0;
-}
-
-.modal-left {
-  padding: 60px 30px 20px;
-  background: #fff;
-  flex: 1.5;
-  transform: translateY(80px);
-  opacity: 0;
-  transition: 0.5s;
-}
-
-.modal.is-open .modal-left {
-  transform: translateY(0);
-  opacity: 1;
-  transition-delay: 0.1s;
-}
-
-.modal-right {
-  flex: 2;
-  overflow: hidden;
-  transition: 0.3s;
-}
-
-.modal-right img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transform: scale(2);
-  transition: 1.2s;
-}
-
-.modal.is-open .modal-right img {
-  transform: scale(1);
-}
-
-.input-block {
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  margin-bottom: 20px;
-  transition: 0.3s;
-}
-
-.input-label {
-  font-size: 11px;
-  text-transform: uppercase;
-  font-weight: 600;
-  color: #8c7569;
-  margin-bottom: 4px;
-}
-
-.input-block input {
-  border: none;
-  outline: none;
-  padding: 4px 0;
-  font-size: 14px;
-}
-
-.input-button {
-  padding: 8px 12px;
-  color: #fff;
-  background: #8c7569;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.scroll-down {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  color: #7a5f52;
-  font-size: 32px;
-  font-weight: 800;
+  align-items: center;
   z-index: 1000;
 }
 
-.scroll-down svg {
-  margin-top: 16px;
-  width: 52px;
-  fill: currentColor;
+.signup-modal {
+  width: 700px;
+  height: 500px;
+  background-color: #fff;
+  border-radius: 10px;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  z-index: 1001;
 }
 
-.scroll-background {
-  height: 150vh;
-  background-color: #f5f5f5;
+/* Left section */
+.signup-left {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-@media (max-width: 750px) {
-  .modal-container {
-    width: 90%;
-  }
+.signup-left h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
 
-  .modal-right {
-    display: none;
-  }
+.signup-left p {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.signup-form label {
+  font-size: 0.75rem;
+  font-weight: bold;
+  margin-bottom: 4px;
+  color: #555;
+}
+
+.signup-form input {
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.signup-button {
+  background-color: #5c6bc0;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.signup-button:hover {
+  background-color: #3f51b5;
+}
+
+/* Right image section */
+.signup-right {
+  flex: 1;
+  background-color: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.signup-right img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Close (×) button */
+.close-button {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #333;
 }
