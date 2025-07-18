@@ -7,7 +7,6 @@ import './styling/landing.css';
 import './styling/Login.css';
 import './styling/Signup.css';
 
-
 const App = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [showLogin, setShowLogin] = useState(true);
