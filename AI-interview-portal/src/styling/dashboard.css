@@ -8,7 +8,7 @@ body,
 html {
   height: 100%;
   width: 100%;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .dashboard {
@@ -20,9 +20,8 @@ html {
   overflow: hidden;
 }
 
-/* Left Panel */
 .left-section {
-  flex: 1;
+  flex: 0.5;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -78,13 +77,13 @@ html {
   color: black;
 }
 
-/* Right Panel */
 .right-section {
   flex: 2;
   padding: 60px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
+  padding: 25px 30px 40px 30px;
 }
 
 .right-section h1 {
@@ -98,7 +97,7 @@ html {
   font-size: 20px;
   line-height: 1.5;
   margin-bottom: 35px;
-  max-width: 600px;
+  max-width: 1000px;
 }
 
 .email-section {
@@ -130,12 +129,11 @@ html {
   background-color: #f0f0f0;
 }
 
-/* Feedback Box */
 .example-feedback {
   background-color: rgba(255, 255, 255, 0.1);
   padding: 20px;
   border-radius: 12px;
-  max-width: 600px;
+  max-width: 500px;
   color: #fff;
 }
 
@@ -149,16 +147,6 @@ html {
   font-weight: bold;
   font-size: 18px;
   margin-bottom: 6px;
-}
-
-.example-feedback .score {
-  font-size: 16px;
-  margin-bottom: 6px;
-}
-
-.example-feedback .score span {
-  font-weight: bold;
-  color: #00ffae;
 }
 
 .example-feedback .improvements {

@@ -7,10 +7,10 @@ const Dashboard = () => {
       <div className="left-section">
         <div className="logo">🤖 AI Interview</div>
         <ul className="nav-links">
-          <li>Products</li>
+          <li>Practice</li>
           <li>Customers</li>
-          <li>Pricing</li>
-          <li>Learn</li>
+          <li>Feedback</li>
+          <li>Resources</li>
         </ul>
         <div className="buttons">
           <button className="btn login">Login</button>
@@ -19,25 +19,18 @@ const Dashboard = () => {
       </div>
 
       <div className="right-section">
-        <h1>
-          Crack interviews <br />
-          with AI feedback <br />
-          instantly.
-        </h1>
+        <h1>Crack interviews with AI feedback instantly.</h1>
         <p>
-          Practice mock interviews powered by AI. Get instant feedback, tips,
-          and performance reports.
+          Practice mock interviews powered by AI. Get instant feedback, tips and
+          performance reports.
         </p>
         <div className="email-section">
-          <input type="email" placeholder="Your business email" />
+          <input type="email" placeholder="Your email" />
           <button className="btn get-started">Get Started</button>
         </div>
         <div className="example-feedback">
           <p className="platforms">OpenAI · Leetcode · Glassdoor</p>
           <p className="heading">Interview Feedback</p>
-          <p className="score">
-            Confidence Score: <span>89%</span>
-          </p>
           <p className="improvements">
             Suggested Improvements: Communication, Depth
           </p>

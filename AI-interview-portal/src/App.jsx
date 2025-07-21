@@ -8,7 +8,7 @@ import Dashboard from "./pages/dashboard.jsx";
 const App = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [showLogin, setShowLogin] = useState(true);
-  const navigate = useNavigate(); // Needed to redirect after login
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     document.body.style.overflow = modalOpen ? "hidden" : "auto";
