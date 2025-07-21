@@ -1,4 +1,5 @@
 import React from "react";
+import "../styling/Login.css";
 import { useNavigate } from "react-router-dom";
 
 const Login = ({ onClose, onSignupClick }) => {

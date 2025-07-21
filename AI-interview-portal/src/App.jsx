@@ -5,13 +5,10 @@ import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
 import Dashboard from "./pages/dashboard.jsx";
 
-import "./styling/landing.css";
-import "./styling/Login.css";
-import "./styling/Signup.css";
-
 const App = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [showLogin, setShowLogin] = useState(true);
+  const navigate = useNavigate(); // Needed to redirect after login
 
   useEffect(() => {
     document.body.style.overflow = modalOpen ? "hidden" : "auto";
@@ -30,6 +27,11 @@ const App = () => {
     setModalOpen(false);
   };
 
+  const handleLoginSuccess = () => {
+    setModalOpen(false);
+    navigate("/dashboard"); // Redirect to dashboard after login
+  };
+
   return (
     <Routes>
       {/* ✅ Route for Landing page */}
@@ -45,6 +47,7 @@ const App = () => {
                     <Login
                       onClose={handleCloseModal}
                       onSignupClick={handleSignupClick}
+                      onLoginSuccess={handleLoginSuccess} // <-- this will trigger dashboard redirect
                     />
                   ) : (
                     <Signup onClose={handleCloseModal} />

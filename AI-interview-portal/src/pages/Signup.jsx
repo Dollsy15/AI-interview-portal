@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styling/signup.css';
+import '../styling/Signup.css';
 
 const Signup = ({ onClose }) => {
   return (

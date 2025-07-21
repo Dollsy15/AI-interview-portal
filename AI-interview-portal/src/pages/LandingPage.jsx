@@ -1,4 +1,5 @@
 import React from 'react';
+import "../styling/landing.css";
 
 const Landing = ({ onLoginClick }) => {
   return (
