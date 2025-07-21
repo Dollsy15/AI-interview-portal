@@ -30,9 +30,10 @@ const Dashboard = () => {
         </div>
         <div className="example-feedback">
           <p className="platforms">OpenAI · Leetcode · Glassdoor</p>
-          <p className="heading">Interview Feedback</p>
+          <p className="heading">Candidate Performance Summary</p>
           <p className="improvements">
-            Suggested Improvements: Communication, Depth
+            Areas of Improvement: Clarity in Communication, Deeper Technical
+            Reasoning
           </p>
         </div>
       </div>

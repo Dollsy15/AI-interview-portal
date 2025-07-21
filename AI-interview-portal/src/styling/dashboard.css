@@ -131,16 +131,22 @@ html {
 
 .example-feedback {
   background-color: rgba(255, 255, 255, 0.1);
-  padding: 20px;
+  padding: 14px 20px;
   border-radius: 12px;
-  max-width: 500px;
+  max-width: 600px;
   color: #fff;
+  height: 120px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .example-feedback .platforms {
   font-size: 14px;
   color: #ddd;
   margin-bottom: 8px;
+  margin-top: 28px;
 }
 
 .example-feedback .heading {
