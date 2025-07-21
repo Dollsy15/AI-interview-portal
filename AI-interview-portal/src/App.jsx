@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import Landing from './pages/LandingPage.jsx';
-import Login from './pages/Login.jsx';
-import Signup from './pages/Signup.jsx';
+import React, { useState, useEffect } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import Landing from "./pages/LandingPage.jsx";
+import Login from "./pages/Login.jsx";
+import Signup from "./pages/Signup.jsx";
+import Dashboard from "./pages/dashboard.jsx";
 
-import './styling/landing.css';
-import './styling/Login.css';
-import './styling/Signup.css';
+import "./styling/landing.css";
+import "./styling/Login.css";
+import "./styling/Signup.css";
 
 const App = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [showLogin, setShowLogin] = useState(true);
 
   useEffect(() => {
-    document.body.style.overflow = modalOpen ? 'hidden' : 'auto';
+    document.body.style.overflow = modalOpen ? "hidden" : "auto";
   }, [modalOpen]);
 
   const handleLoginClick = () => {
@@ -29,21 +31,34 @@ const App = () => {
   };
 
   return (
-    <>
-      <Landing onLoginClick={handleLoginClick} />
-
-      {modalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            {showLogin ? (
-              <Login onClose={handleCloseModal} onSignupClick={handleSignupClick} />
-            ) : (
-              <Signup onClose={handleCloseModal} />
+    <Routes>
+      {/* ✅ Route for Landing page */}
+      <Route
+        path="/"
+        element={
+          <>
+            <Landing onLoginClick={handleLoginClick} />
+            {modalOpen && (
+              <div className="modal-overlay">
+                <div className="modal-content">
+                  {showLogin ? (
+                    <Login
+                      onClose={handleCloseModal}
+                      onSignupClick={handleSignupClick}
+                    />
+                  ) : (
+                    <Signup onClose={handleCloseModal} />
+                  )}
+                </div>
+              </div>
             )}
-          </div>
-        </div>
-      )}
-    </>
+          </>
+        }
+      />
+
+      {/* ✅ Route for Dashboard */}
+      <Route path="/dashboard" element={<Dashboard />} />
+    </Routes>
   );
 };
 

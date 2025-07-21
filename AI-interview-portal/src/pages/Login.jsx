@@ -1,12 +1,16 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom'; // ✅ Step 1
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Login = ({ onClose, onSignupClick }) => {
-  const navigate = useNavigate(); // ✅ Step 2
+  const navigate = useNavigate();
 
-  const handleLogin = () => {
-    onClose(); // close modal
-    navigate('/dashboard'); // redirect to dashboard
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    // (Optional) Add form validation/auth logic here
+
+    onClose(); // close the modal
+    navigate("/dashboard"); // navigate to dashboard route
   };
 
   return (
@@ -15,26 +19,50 @@ const Login = ({ onClose, onSignupClick }) => {
         <div className="modal-left">
           <h1 className="modal-title">Welcome!</h1>
           <p className="modal-desc">
-            Step into your future with AI-powered mock interviews and personalized feedback to sharpen your skills.
+            Step into your future with AI-powered mock interviews and
+            personalized feedback to sharpen your skills.
           </p>
 
-          <div className="input-block">
-            <label htmlFor="email" className="input-label">Email</label>
-            <input type="email" name="email" id="email" placeholder="Email" />
-          </div>
+          <form onSubmit={handleLogin}>
+            <div className="input-block">
+              <label htmlFor="email" className="input-label">
+                Email
+              </label>
+              <input
+                type="email"
+                name="email"
+                id="email"
+                placeholder="Email"
+                required
+              />
+            </div>
 
-          <div className="input-block">
-            <label htmlFor="password" className="input-label">Password</label>
-            <input type="password" name="password" id="password" placeholder="Password" />
-          </div>
+            <div className="input-block">
+              <label htmlFor="password" className="input-label">
+                Password
+              </label>
+              <input
+                type="password"
+                name="password"
+                id="password"
+                placeholder="Password"
+                required
+              />
+            </div>
 
-          <div className="modal-buttons">
-            <a href="#">Forgot your password?</a>
-            <button className="input-button" onClick={handleLogin}>Login</button> {/* ✅ Updated */}
-          </div>
+            <div className="modal-buttons">
+              <a href="#">Forgot your password?</a>
+              <button type="submit" className="input-button">
+                Login
+              </button>
+            </div>
+          </form>
 
           <p className="sign-up">
-            Don't have an account? <a href="#" onClick={onSignupClick}>Sign up now</a>
+            Don't have an account?{" "}
+            <a href="#" onClick={onSignupClick}>
+              Sign up now
+            </a>
           </p>
         </div>
 
@@ -47,7 +75,7 @@ const Login = ({ onClose, onSignupClick }) => {
 
         <button className="icon-button close-button" onClick={onClose}>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
-            <path d="M 25 3 C 12.86158 3 3 12.86158 3 25 C 3 37.13842 12.86158 47 25 47 C 37.13842 47 47 37.13842 47 25 C 47 12.86158 37.13842 3 25 3 z M 25 5 C 36.05754 5 45 13.94246 45 25 C 45 36.05754 36.05754 45 25 45 C 13.94246 45 5 36.05754 5 25 C 5 13.94246 13.94246 5 25 5 z M 16.990234 15.990234 A 1.0001 1.0001 0 0 0 16.292969 17.707031 L 23.585938 25 L 16.292969 32.292969 A 1.0001 1.0001 0 1 0 17.707031 33.707031 L 25 26.414062 L 32.292969 33.707031 A 1.0001 1.0001 0 1 0 33.707031 32.292969 L 26.414062 25 L 33.707031 17.707031 A 1.0001 1.0001 0 0 0 32.980469 15.990234 A 1.0001 1.0001 0 0 0 32.292969 16.292969 L 25 23.585938 L 17.707031 16.292969 A 1.0001 1.0001 0 0 0 16.990234 15.990234 z"/>
+            <path d="M 25 3 C 12.86158 3 3 12.86158 3 25 C 3 37.13842 12.86158 47 25 47 C 37.13842 47 47 37.13842 47 25 C 47 12.86158 37.13842 3 25 3 z M 25 5 C 36.05754 5 45 13.94246 45 25 C 45 36.05754 36.05754 45 25 45 C 13.94246 45 5 36.05754 5 25 C 5 13.94246 13.94246 5 25 5 z M 16.990234 15.990234 A 1.0001 1.0001 0 0 0 16.292969 17.707031 L 23.585938 25 L 16.292969 32.292969 A 1.0001 1.0001 0 1 0 17.707031 33.707031 L 25 26.414062 L 32.292969 33.707031 A 1.0001 1.0001 0 1 0 33.707031 32.292969 L 26.414062 25 L 33.707031 17.707031 A 1.0001 1.0001 0 0 0 32.980469 15.990234 A 1.0001 1.0001 0 0 0 32.292969 16.292969 L 25 23.585938 L 17.707031 16.292969 A 1.0001 1.0001 0 0 0 16.990234 15.990234 z" />
           </svg>
         </button>
       </div>
