@@ -1,13 +1,15 @@
 import React from 'react';
-import '../styling/Dashboard.css'; 
+import Navbar from '../components/Navbar';
+import Hero from '../components/Hero';
+import '../styling/landing.css';
 
-const Dashboard = () => {
+const LandingPage = () => {
   return (
-    <div className="dashboard-container">
-      <h1>Welcome to your Dashboard 🎉</h1>
-      <p>This is the main area after successful login.</p>
+    <div className="landing-container">
+      <Navbar />
+      <Hero />
     </div>
   );
 };
 
-export default Dashboard;
+export default LandingPage;
