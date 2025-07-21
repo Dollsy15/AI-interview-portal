@@ -1,5 +1,5 @@
 import React from "react";
-import "./dashboard.css";
+import "../styling/dashboard.css";
 
 const Dashboard = () => {
   return (
@@ -25,8 +25,8 @@ const Dashboard = () => {
           instantly.
         </h1>
         <p>
-          Practice mock interviews powered by AI. Get instant feedback, tips, and
-          performance reports.
+          Practice mock interviews powered by AI. Get instant feedback, tips,
+          and performance reports.
         </p>
         <div className="email-section">
           <input type="email" placeholder="Your business email" />
