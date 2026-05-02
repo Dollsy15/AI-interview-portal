@@ -3,10 +3,8 @@ const router = express.Router();
 const Question = require("../models/Question");
 const User = require("../models/User");
 const authMiddleware = require("../middleware/auth");
-const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-
+// ===================== SUBMIT ANSWERS =====================
 router.post("/submit-answers", authMiddleware, async (req, res) => {
   try {
     const answers = req.body.answers;
@@ -33,34 +31,25 @@ router.post("/submit-answers", authMiddleware, async (req, res) => {
     });
 
     const totalQuestions = questions.length;
-
     const percentageScore = Math.round((score / totalQuestions) * 100);
 
-    const model = genAI.getGenerativeModel({
-      model: "gemini-1.5-flash",
-    });
+    // ===================== SIMPLE FEEDBACK (NO AI) =====================
+    let feedback = `
+Overall Score: ${percentageScore}%
 
-    let combinedAnswers = "";
+Great effort! Keep practicing.
 
-    questions.forEach((q) => {
-      combinedAnswers += "Question: " + q.question + "\n";
-      combinedAnswers += "Answer: " + (answers[q._id] || "No answer") + "\n\n";
-    });
+Strengths:
+- Attempted all questions
 
-    const prompt =
-      "You are an interview evaluator.\nGive feedback:\n1. Overall\n2. Strengths\n3. Weaknesses\n4. Improvements\n\n" +
-      combinedAnswers;
+Weaknesses:
+- Need more accuracy
 
-    let feedback = "No feedback";
+Improvements:
+- Practice DSA and fundamentals daily
+    `;
 
-    try {
-      const result = await model.generateContent(prompt);
-      const response = await result.response;
-      feedback = response.text();
-    } catch (err) {
-      console.log(err);
-    }
-
+    // ===================== UPDATE USER STATS =====================
     const user = await User.findById(userId);
 
     if (user) {
@@ -71,7 +60,6 @@ router.post("/submit-answers", authMiddleware, async (req, res) => {
       };
 
       const prev = user.stats.interviewsTaken;
-
       const newInterviews = prev + 1;
 
       const newAvg =

@@ -1,31 +1,30 @@
 require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const interviewRoutes = require("./routes/interview");
 
+const interviewRoutes = require("./routes/interview");
 const auth = require("./middleware/auth");
 const questionRoutes = require("./routes/questionRoutes");
 const authRoutes = require("./routes/authRoutes");
 const User = require("./models/User");
 
+// ===================== APP =====================
 const app = express();
 
-// --------------------
-// Middleware
-// --------------------
+// ===================== MIDDLEWARE =====================
 app.use(cors());
 app.use(express.json());
 
+// ===================== ROUTES =====================
 app.use("/api/questions", questionRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api", interviewRoutes);
 
-// --------------------
-// MongoDB Connection
-// --------------------
+// ===================== MONGODB CONNECTION =====================
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB Connected Successfully"))
@@ -34,9 +33,7 @@ mongoose
     process.exit(1);
   });
 
-// --------------------
-// Protected Dashboard Route
-// --------------------
+// ===================== DASHBOARD =====================
 app.get("/dashboard", auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.userId).select("-password");
@@ -48,14 +45,11 @@ app.get("/dashboard", auth, async (req, res) => {
       user,
     });
   } catch (err) {
-    console.error(err);
     res.status(500).json({ message: "Server error" });
   }
 });
 
-// --------------------
-// Signup Route
-// --------------------
+// ===================== SIGNUP =====================
 app.post("/signup", async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -77,14 +71,11 @@ app.post("/signup", async (req, res) => {
 
     res.json({ message: "Signup successful" });
   } catch (err) {
-    console.error(err);
     res.status(500).json({ message: "Server error" });
   }
 });
 
-// --------------------
-// Login Route
-// --------------------
+// ===================== LOGIN =====================
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
@@ -94,23 +85,15 @@ app.post("/login", async (req, res) => {
   try {
     const user = await User.findOne({ email });
 
-    console.log("User found:", user);
-
     if (!user) {
-      console.log("❌ User NOT found");
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
 
-    console.log("Password Match:", isMatch);
-
     if (!isMatch) {
-      console.log("❌ Password NOT matching");
       return res.status(400).json({ message: "Invalid credentials" });
     }
-
-    console.log("✅ Login success");
 
     const token = jwt.sign(
       {
@@ -127,22 +110,18 @@ app.post("/login", async (req, res) => {
       user,
     });
   } catch (err) {
-    console.error(err);
     res.status(500).json({ message: "Server error" });
   }
 });
 
-// --------------------
-// Test Route
-// --------------------
+// ===================== ROOT =====================
 app.get("/", (req, res) => {
   res.send("Backend is running");
 });
 
-// --------------------
-// Start Server
-// --------------------
+// ===================== START SERVER =====================
 const PORT = process.env.PORT || 5000;
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
