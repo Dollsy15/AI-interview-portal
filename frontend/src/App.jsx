@@ -6,6 +6,7 @@ import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Interview from "./pages/Interview";
+import Result from "./pages/Result";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/interview" element={<Interview />} />
+      <Route path="/result" element={<Result />} />
       <Route
         path="/dashboard"
         element={

@@ -67,8 +67,12 @@ const Interview = () => {
         },
       );
 
-      alert(`Score: ${res.data.score}\n\nFeedback:\n${res.data.feedback}`);
-      navigate("/dashboard");
+      navigate("/result", {
+        state: {
+          score: res.data.score,
+          feedback: res.data.feedback,
+        },
+      });
     } catch (err) {
       console.error(err.response?.data || err.message);
       alert("Error submitting interview");
