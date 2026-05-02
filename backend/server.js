@@ -28,8 +28,11 @@ app.use("/api", interviewRoutes);
 // --------------------
 mongoose
   .connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.error("MongoDB error:", err));
+  .then(() => console.log("✅ MongoDB Connected Successfully"))
+  .catch((err) => {
+    console.error("❌ MongoDB error:", err);
+    process.exit(1);
+  });
 
 // --------------------
 // Protected Dashboard Route
@@ -85,23 +88,34 @@ app.post("/signup", async (req, res) => {
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
-  if (!email || !password)
-    return res.status(400).json({ message: "Fill all fields" });
+  console.log("Entered Email:", email);
+  console.log("Entered Password:", password);
 
   try {
     const user = await User.findOne({ email });
 
-    if (!user) return res.status(400).json({ message: "Invalid credentials" });
+    console.log("User found:", user);
+
+    if (!user) {
+      console.log("❌ User NOT found");
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
 
     const isMatch = await bcrypt.compare(password, user.password);
 
-    if (!isMatch)
+    console.log("Password Match:", isMatch);
+
+    if (!isMatch) {
+      console.log("❌ Password NOT matching");
       return res.status(400).json({ message: "Invalid credentials" });
+    }
+
+    console.log("✅ Login success");
 
     const token = jwt.sign(
       {
         userId: user._id,
-        username: user.name, // 👈 add this
+        username: user.name,
       },
       process.env.JWT_SECRET,
       { expiresIn: "1h" },
@@ -110,11 +124,7 @@ app.post("/login", async (req, res) => {
     res.json({
       message: "Login successful",
       token,
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-      },
+      user,
     });
   } catch (err) {
     console.error(err);
