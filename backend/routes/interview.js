@@ -3,28 +3,30 @@ const router = express.Router();
 const Question = require("../models/Question");
 const User = require("../models/User");
 const authMiddleware = require("../middleware/auth");
-
-// ✅ Gemini AI
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-// ================= SUBMIT ANSWERS =================
 router.post("/submit-answers", authMiddleware, async (req, res) => {
   try {
-    const { answers } = req.body;
-    const userId = req.user.userId; // make sure middleware uses userId
+    const answers = req.body.answers;
+    const userId = req.user.userId;
 
     const questions = await Question.find();
 
+    if (!questions.length) {
+      return res.status(404).json({ message: "No questions found" });
+    }
+
     let score = 0;
 
-    // ================= SCORING =================
     questions.forEach((q) => {
       const userAnswer = answers[q._id];
 
       if (
         userAnswer &&
-        userAnswer.toLowerCase().trim() === q.correctAnswer.toLowerCase().trim()
+        q.correctAnswer &&
+        userAnswer.trim().toLowerCase() === q.correctAnswer.trim().toLowerCase()
       ) {
         score++;
       }
@@ -32,49 +34,48 @@ router.post("/submit-answers", authMiddleware, async (req, res) => {
 
     const totalQuestions = questions.length;
 
-    const percentageScore = totalQuestions
-      ? Math.round((score / totalQuestions) * 100)
-      : 0;
+    const percentageScore = Math.round((score / totalQuestions) * 100);
 
-    // ================= AI FEEDBACK =================
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const model = genAI.getGenerativeModel({
+      model: "gemini-1.5-flash",
+    });
 
     let combinedAnswers = "";
 
     questions.forEach((q) => {
-      combinedAnswers += `Question: ${q.question}\n`;
-      combinedAnswers += `User Answer: ${answers[q._id] || "No answer"}\n\n`;
+      combinedAnswers += "Question: " + q.question + "\n";
+      combinedAnswers += "Answer: " + (answers[q._id] || "No answer") + "\n\n";
     });
 
-    const prompt = `
+    const prompt =
+      "You are an interview evaluator.\nGive feedback:\n1. Overall\n2. Strengths\n3. Weaknesses\n4. Improvements\n\n" +
+      combinedAnswers;
 
-You are an interview evaluator.
+    let feedback = "No feedback";
 
-Evaluate the following answers and give:
+    try {
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
+      feedback = response.text();
+    } catch (err) {
+      console.log(err);
+    }
 
-1. Overall feedback
-2. Strengths
-3. Weaknesses
-4. Improvement suggestions
-
-${combinedAnswers}
-`;
-
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const feedback = response.text();
-
-    // ================= UPDATE USER STATS =================
     const user = await User.findById(userId);
 
     if (user) {
-      const prevInterviews = user.stats.interviewsTaken;
-      const prevAvg = user.stats.avgScore;
+      user.stats = user.stats || {
+        interviewsTaken: 0,
+        avgScore: 0,
+        questionsPracticed: 0,
+      };
 
-      const newInterviews = prevInterviews + 1;
+      const prev = user.stats.interviewsTaken;
+
+      const newInterviews = prev + 1;
 
       const newAvg =
-        (prevAvg * prevInterviews + percentageScore) / newInterviews;
+        (user.stats.avgScore * prev + percentageScore) / newInterviews;
 
       user.stats.interviewsTaken = newInterviews;
       user.stats.avgScore = Math.round(newAvg);
@@ -83,15 +84,17 @@ ${combinedAnswers}
       await user.save();
     }
 
-    // ================= RESPONSE =================
     res.json({
       score: percentageScore,
       totalQuestions,
       feedback,
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server Error" });
+    console.log(error);
+    res.status(500).json({
+      message: "Internal Server Error",
+      error: error.message,
+    });
   }
 });
 
