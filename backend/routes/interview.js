@@ -6,7 +6,7 @@ const Question = require("../models/Question");
 const User = require("../models/User");
 const authMiddleware = require("../middleware/auth");
 
-// ===================== SUBMIT ANSWERS =====================
+// ===================== SUBMIT =====================
 router.post("/submit-answers", authMiddleware, async (req, res) => {
   try {
     const answers = req.body.answers;
@@ -14,8 +14,10 @@ router.post("/submit-answers", authMiddleware, async (req, res) => {
 
     const questions = await Question.find();
 
-    if (!questions.length) {
-      return res.status(404).json({ message: "No questions found" });
+    if (!questions || questions.length === 0) {
+      return res.status(404).json({
+        message: "No questions found",
+      });
     }
 
     // ================= SCORE =================
@@ -35,9 +37,13 @@ router.post("/submit-answers", authMiddleware, async (req, res) => {
     });
 
     const totalQuestions = questions.length;
-    const percentageScore = Math.round((score / totalQuestions) * 100);
 
-    // ================= FORMAT ANSWERS =================
+    const percentageScore =
+      totalQuestions > 0
+        ? Math.round((score / totalQuestions) * 100)
+        : 0;
+
+    // ================= AI FEEDBACK =================
     let combinedAnswers = "";
 
     questions.forEach((q) => {
@@ -45,14 +51,13 @@ router.post("/submit-answers", authMiddleware, async (req, res) => {
       combinedAnswers += `Answer: ${answers[q._id] || "No answer"}\n\n`;
     });
 
-    // ================= AI FEEDBACK (HUGGINGFACE) =================
-    let feedback = "";
+    let feedback = "AI feedback not available";
 
     try {
       const prompt = `
 You are an interview evaluator.
 
-Evaluate the candidate:
+Analyze:
 
 ${combinedAnswers}
 
@@ -70,13 +75,12 @@ Give:
 
       feedback =
         response.data?.[0]?.generated_text ||
-        "Feedback not available";
+        "No feedback generated";
     } catch (err) {
       console.log("AI ERROR:", err.message);
-      feedback = "AI feedback temporarily unavailable";
     }
 
-    // ================= UPDATE USER STATS =================
+    // ================= USER UPDATE =================
     const user = await User.findById(userId);
 
     if (user) {
@@ -86,7 +90,7 @@ Give:
         questionsPracticed: 0,
       };
 
-      const prev = user.stats.interviewsTaken;
+      const prev = user.stats.interviewsTaken || 0;
       const newInterviews = prev + 1;
 
       const newAvg =
@@ -100,11 +104,13 @@ Give:
       await user.save();
     }
 
+    // ================= RESPONSE =================
     res.json({
       score: percentageScore,
       totalQuestions,
       feedback,
     });
+
   } catch (error) {
     console.log(error);
     res.status(500).json({

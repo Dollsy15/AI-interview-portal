@@ -59,9 +59,16 @@ const Dashboard = () => {
     try {
       const token = localStorage.getItem("token");
 
+      const formattedAnswers = {};
+
+      questions.forEach((q) => {
+        const key = q._id || q.id;
+        formattedAnswers[key] = answers[key] || "";
+      });
+
       const res = await axios.post(
         "http://localhost:5000/api/submit-answers",
-        { answers },
+        { answers: formattedAnswers },
         {
           headers: { Authorization: `Bearer ${token}` },
         },

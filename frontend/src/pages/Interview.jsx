@@ -34,7 +34,7 @@ const Interview = () => {
   const handleChange = (value) => {
     setAnswers((prev) => ({
       ...prev,
-      [currentIndex]: value,
+      [questions[currentIndex]?._id]: value, // ✅ FIXED IMPORTANT
     }));
   };
 
@@ -51,16 +51,15 @@ const Interview = () => {
     }
   };
 
-  // ================= SUBMIT INTERVIEW =================
+  // ================= SUBMIT =================
   const submitInterview = async () => {
     try {
       const token = localStorage.getItem("token");
 
-      // format answers properly
       const formattedAnswers = {};
 
-      questions.forEach((q, index) => {
-        formattedAnswers[q._id] = answers[index] || "";
+      questions.forEach((q) => {
+        formattedAnswers[q._id] = answers[q._id] || "";
       });
 
       const res = await axios.post(
@@ -75,17 +74,18 @@ const Interview = () => {
 
       navigate("/result", {
         state: {
-          score: res.data.score,
-          feedback: res.data.feedback,
+          score: res.data.score || 0,
+          feedback: res.data.feedback || "No feedback",
         },
       });
     } catch (err) {
       console.log("SUBMIT ERROR:", err.response?.data || err.message);
+
       alert(err.response?.data?.message || "Error submitting interview");
     }
   };
 
-  // ================= LOADING =================
+  // ================= LOADING / EMPTY =================
   if (!questions.length) {
     return <h2 style={{ padding: "40px" }}>Loading questions...</h2>;
   }
@@ -103,7 +103,7 @@ const Interview = () => {
       </p>
 
       <textarea
-        value={answers[currentIndex] || ""}
+        value={answers[currentQuestion._id] || ""} // ✅ FIXED
         onChange={(e) => handleChange(e.target.value)}
         placeholder="Type your answer..."
         style={{
@@ -114,7 +114,7 @@ const Interview = () => {
         }}
       />
 
-      {/* NAVIGATION BUTTONS */}
+      {/* NAVIGATION */}
       <div style={{ marginTop: "20px" }}>
         <button onClick={prevQuestion} disabled={currentIndex === 0}>
           Previous
@@ -129,7 +129,7 @@ const Interview = () => {
         </button>
       </div>
 
-      {/* SUBMIT BUTTON */}
+      {/* SUBMIT */}
       {currentIndex === questions.length - 1 && (
         <button
           onClick={submitInterview}
@@ -139,6 +139,7 @@ const Interview = () => {
             background: "green",
             color: "white",
             border: "none",
+            cursor: "pointer",
           }}
         >
           Submit Interview
