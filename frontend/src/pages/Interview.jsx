@@ -13,24 +13,28 @@ const Interview = () => {
     const fetchQuestions = async () => {
       try {
         const token = localStorage.getItem("token");
+
         const res = await axios.get("http://localhost:5000/api/questions", {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
 
         const data = res.data.questions || res.data || [];
         setQuestions(data);
       } catch (err) {
-        console.error("Error fetching questions:", err);
+        console.log("FETCH ERROR:", err.response?.data || err.message);
       }
     };
+
     fetchQuestions();
   }, []);
 
-  // ================= HANDLE CHANGE =================
-  const handleChange = (index, value) => {
+  // ================= HANDLE ANSWER =================
+  const handleChange = (value) => {
     setAnswers((prev) => ({
       ...prev,
-      [index]: value,
+      [currentIndex]: value,
     }));
   };
 
@@ -47,23 +51,25 @@ const Interview = () => {
     }
   };
 
-  // ================= SUBMIT =================
+  // ================= SUBMIT INTERVIEW =================
   const submitInterview = async () => {
     try {
       const token = localStorage.getItem("token");
 
+      // format answers properly
       const formattedAnswers = {};
+
       questions.forEach((q, index) => {
-        if (q._id) {
-          formattedAnswers[q._id] = answers[index] || "";
-        }
+        formattedAnswers[q._id] = answers[index] || "";
       });
 
       const res = await axios.post(
         "http://localhost:5000/api/submit-answers",
         { answers: formattedAnswers },
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
       );
 
@@ -74,79 +80,65 @@ const Interview = () => {
         },
       });
     } catch (err) {
-      console.error(err.response?.data || err.message);
-      alert("Error submitting interview");
+      console.log("SUBMIT ERROR:", err.response?.data || err.message);
+      alert(err.response?.data?.message || "Error submitting interview");
     }
   };
 
-  if (!questions || questions.length === 0) {
+  // ================= LOADING =================
+  if (!questions.length) {
     return <h2 style={{ padding: "40px" }}>Loading questions...</h2>;
   }
 
   const currentQuestion = questions[currentIndex];
 
   return (
-    <div style={{ padding: "40px", maxWidth: "600px", margin: "0 auto" }}>
+    <div style={{ padding: "40px", maxWidth: "600px", margin: "auto" }}>
       <h2>
         Question {currentIndex + 1} of {questions.length}
       </h2>
 
-      <p style={{ fontSize: "18px", margin: "20px 0", fontWeight: "500" }}>
-        {currentQuestion?.question}
+      <p style={{ fontSize: "18px", margin: "20px 0" }}>
+        {currentQuestion.question}
       </p>
 
       <textarea
-        placeholder="Type your answer here..."
         value={answers[currentIndex] || ""}
-        onChange={(e) => handleChange(currentIndex, e.target.value)}
+        onChange={(e) => handleChange(e.target.value)}
+        placeholder="Type your answer..."
         style={{
           width: "100%",
           height: "150px",
-          padding: "15px",
-          borderRadius: "8px",
-          border: "1px solid #ccc",
+          padding: "10px",
           fontSize: "16px",
         }}
       />
 
-      <div style={{ marginTop: "20px", display: "flex", gap: "10px" }}>
-        <button
-          onClick={prevQuestion}
-          disabled={currentIndex === 0}
-          style={{
-            padding: "10px 20px",
-            cursor: currentIndex === 0 ? "not-allowed" : "pointer",
-          }}
-        >
+      {/* NAVIGATION BUTTONS */}
+      <div style={{ marginTop: "20px" }}>
+        <button onClick={prevQuestion} disabled={currentIndex === 0}>
           Previous
         </button>
 
         <button
           onClick={nextQuestion}
           disabled={currentIndex === questions.length - 1}
-          style={{
-            padding: "10px 20px",
-            cursor:
-              currentIndex === questions.length - 1 ? "not-allowed" : "pointer",
-          }}
+          style={{ marginLeft: "10px" }}
         >
           Next
         </button>
       </div>
 
+      {/* SUBMIT BUTTON */}
       {currentIndex === questions.length - 1 && (
         <button
           onClick={submitInterview}
           style={{
             marginTop: "30px",
-            padding: "12px 25px",
-            background: "#4a6cf7",
-            color: "#fff",
+            padding: "10px 20px",
+            background: "green",
+            color: "white",
             border: "none",
-            borderRadius: "6px",
-            cursor: "pointer",
-            width: "100%",
-            fontSize: "16px",
           }}
         >
           Submit Interview
