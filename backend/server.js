@@ -24,7 +24,7 @@ app.use("/api/questions", questionRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api", interviewRoutes);
 
-// ===================== MONGODB CONNECTION =====================
+// ===================== MONGODB =====================
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB Connected Successfully"))
@@ -58,6 +58,7 @@ app.post("/signup", async (req, res) => {
 
   try {
     const existingUser = await User.findOne({ email });
+
     if (existingUser)
       return res.status(400).json({ message: "User already exists" });
 
@@ -79,21 +80,15 @@ app.post("/signup", async (req, res) => {
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
-  console.log("Entered Email:", email);
-  console.log("Entered Password:", password);
-
   try {
     const user = await User.findOne({ email });
 
-    if (!user) {
-      return res.status(400).json({ message: "Invalid credentials" });
-    }
+    if (!user) return res.status(400).json({ message: "Invalid credentials" });
 
     const isMatch = await bcrypt.compare(password, user.password);
 
-    if (!isMatch) {
+    if (!isMatch)
       return res.status(400).json({ message: "Invalid credentials" });
-    }
 
     const token = jwt.sign(
       {

@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const axios = require("axios");
+
 const Question = require("../models/Question");
 const User = require("../models/User");
 const authMiddleware = require("../middleware/auth");
@@ -16,6 +18,7 @@ router.post("/submit-answers", authMiddleware, async (req, res) => {
       return res.status(404).json({ message: "No questions found" });
     }
 
+    // ================= SCORE =================
     let score = 0;
 
     questions.forEach((q) => {
@@ -24,7 +27,8 @@ router.post("/submit-answers", authMiddleware, async (req, res) => {
       if (
         userAnswer &&
         q.correctAnswer &&
-        userAnswer.trim().toLowerCase() === q.correctAnswer.trim().toLowerCase()
+        userAnswer.trim().toLowerCase() ===
+          q.correctAnswer.trim().toLowerCase()
       ) {
         score++;
       }
@@ -33,23 +37,46 @@ router.post("/submit-answers", authMiddleware, async (req, res) => {
     const totalQuestions = questions.length;
     const percentageScore = Math.round((score / totalQuestions) * 100);
 
-    // ===================== SIMPLE FEEDBACK (NO AI) =====================
-    let feedback = `
-Overall Score: ${percentageScore}%
+    // ================= FORMAT ANSWERS =================
+    let combinedAnswers = "";
 
-Great effort! Keep practicing.
+    questions.forEach((q) => {
+      combinedAnswers += `Question: ${q.question}\n`;
+      combinedAnswers += `Answer: ${answers[q._id] || "No answer"}\n\n`;
+    });
 
-Strengths:
-- Attempted all questions
+    // ================= AI FEEDBACK (HUGGINGFACE) =================
+    let feedback = "";
 
-Weaknesses:
-- Need more accuracy
+    try {
+      const prompt = `
+You are an interview evaluator.
 
-Improvements:
-- Practice DSA and fundamentals daily
-    `;
+Evaluate the candidate:
 
-    // ===================== UPDATE USER STATS =====================
+${combinedAnswers}
+
+Give:
+1. Overall Feedback
+2. Strengths
+3. Weaknesses
+4. Improvements
+`;
+
+      const response = await axios.post(
+        "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct",
+        { inputs: prompt }
+      );
+
+      feedback =
+        response.data?.[0]?.generated_text ||
+        "Feedback not available";
+    } catch (err) {
+      console.log("AI ERROR:", err.message);
+      feedback = "AI feedback temporarily unavailable";
+    }
+
+    // ================= UPDATE USER STATS =================
     const user = await User.findById(userId);
 
     if (user) {
@@ -63,7 +90,8 @@ Improvements:
       const newInterviews = prev + 1;
 
       const newAvg =
-        (user.stats.avgScore * prev + percentageScore) / newInterviews;
+        (user.stats.avgScore * prev + percentageScore) /
+        newInterviews;
 
       user.stats.interviewsTaken = newInterviews;
       user.stats.avgScore = Math.round(newAvg);
