@@ -59,7 +59,9 @@ const Interview = () => {
 
       const res = await axios.post(
         "http://localhost:5000/api/interview/submit",
-        { answers: finalAnswers },
+        { answers: finalAnswers,
+          questions: questions
+         },
         { headers: { Authorization: `Bearer ${token}` } },
       );
 

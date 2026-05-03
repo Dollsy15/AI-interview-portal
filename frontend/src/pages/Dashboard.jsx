@@ -8,6 +8,7 @@ const Dashboard = () => {
   const [questions, setQuestions] = useState([]);
   const navigate = useNavigate();
   const [answers, setAnswers] = useState({});
+  const [history, setHistory] = useState([]);
 
   useEffect(() => {
     const fetchDashboard = async () => {
@@ -46,6 +47,13 @@ const Dashboard = () => {
     fetchDashboard();
   }, [navigate]);
 
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/api/interview/history")
+      .then((res) => setHistory(res.data))
+      .catch((err) => console.error(err));
+  }, []);
+
   const handleStartInterview = () => {
     navigate("/interview");
   };
@@ -82,6 +90,48 @@ const Dashboard = () => {
       alert("Error submitting answers");
     }
   };
+
+  <h2>Previous Interviews</h2>;
+
+  {
+    history.length === 0 ? (
+      <p>No interviews yet</p>
+    ) : (
+      history.map((item, index) => (
+        <div
+          key={index}
+          style={{
+            border: "1px solid #ccc",
+            padding: "15px",
+            marginBottom: "10px",
+            borderRadius: "8px",
+          }}
+        >
+          <p>
+            <b>Score:</b> {item.score}%
+          </p>
+          <p>
+            <b>Date:</b> {new Date(item.createdAt).toLocaleString()}
+          </p>
+
+          <button
+            onClick={() =>
+              navigate("/result", {
+                state: {
+                  score: item.score,
+                  questions: item.questions,
+                  answers: item.answers,
+                  feedback: "Review your answers and improve.",
+                },
+              })
+            }
+          >
+            View Result
+          </button>
+        </div>
+      ))
+    );
+  }
 
   if (error) return <h3 style={{ color: "red" }}>{error}</h3>;
   if (!userData) return <h3>Loading user info...</h3>;
