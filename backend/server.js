@@ -12,6 +12,7 @@ const questionRoutes = require("./routes/questionRoutes");
 const authRoutes = require("./routes/authRoutes");
 const User = require("./models/User");
 const Interview = require("./models/Interview");
+const resumeRoutes = require("./routes/resume");
 
 // ===================== APP =====================
 const app = express();
@@ -24,6 +25,7 @@ app.use(express.json());
 app.use("/api/questions", questionRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api", interviewRoutes);
+app.use("/", resumeRoutes);
 
 // ===================== MONGODB =====================
 mongoose
