@@ -33,6 +33,30 @@ mongoose
     process.exit(1);
   });
 
+  app.post("/api/interview/submit", (req, res) => {
+  try {
+    const { answers } = req.body;
+
+    console.log("Received answers:", answers);
+
+    if (!answers || answers.length === 0) {
+      return res.status(400).json({ message: "No answers provided" });
+    }
+
+    const score = answers.filter(a => a.answer.trim() !== "").length * 10;
+
+    res.status(200).json({
+      data: {
+        score
+      }
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 // ===================== DASHBOARD =====================
 app.get("/dashboard", auth, async (req, res) => {
   try {

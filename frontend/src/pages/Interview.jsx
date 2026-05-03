@@ -8,37 +8,33 @@ const Interview = () => {
   const [answers, setAnswers] = useState({});
   const navigate = useNavigate();
 
-  // ================= FETCH QUESTIONS =================
+  // Fetch questions
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
         const token = localStorage.getItem("token");
-
         const res = await axios.get("http://localhost:5000/api/questions", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         });
 
         const data = res.data.questions || res.data || [];
         setQuestions(data);
       } catch (err) {
-        console.log("FETCH ERROR:", err.response?.data || err.message);
+        console.error("Error fetching questions:", err);
       }
     };
-
     fetchQuestions();
   }, []);
 
-  // ================= HANDLE ANSWER =================
-  const handleChange = (value) => {
+  // Handle answer change
+  const handleChange = (index, value) => {
     setAnswers((prev) => ({
       ...prev,
-      [questions[currentIndex]?._id]: value, // ✅ FIXED IMPORTANT
+      [index]: value,
     }));
   };
 
-  // ================= NAVIGATION =================
+  // Navigation
   const nextQuestion = () => {
     if (currentIndex < questions.length - 1) {
       setCurrentIndex((prev) => prev + 1);
@@ -51,95 +47,123 @@ const Interview = () => {
     }
   };
 
-  // ================= SUBMIT =================
+  // Submit interview
   const submitInterview = async () => {
     try {
       const token = localStorage.getItem("token");
 
-      const formattedAnswers = {};
-
-      questions.forEach((q) => {
-        formattedAnswers[q._id] = answers[q._id] || "";
-      });
+      const finalAnswers = questions.map((q, index) => ({
+        questionId: q._id,
+        answer: answers[index] || "",
+      }));
 
       const res = await axios.post(
-        "http://localhost:5000/api/submit-answers",
-        { answers: formattedAnswers },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
+        "http://localhost:5000/api/interview/submit",
+        { answers: finalAnswers },
+        { headers: { Authorization: `Bearer ${token}` } },
       );
+
+      // FIX: correct response handling
+      const result = res.data.data;
+
+      // extract questions text
+      const questionList = questions.map((q) => q.question);
+
+      // extract answers in order
+      const answerList = questions.map((q, index) => answers[index] || "");
 
       navigate("/result", {
         state: {
-          score: res.data.score || 0,
-          feedback: res.data.feedback || "No feedback",
+          score: result.score,
+          feedback: "Good attempt! Improve clarity and depth.", // temp
+          questions: questionList,
+          answers: answerList,
+        },
+      });
+
+      navigate("/result", {
+        state: {
+          score: result.score,
+          feedback: "Good attempt! Improve clarity and depth.",
+          questions: questions.map((q) => q.question),
+          answers: questions.map((q, index) => answers[index] || ""),
         },
       });
     } catch (err) {
-      console.log("SUBMIT ERROR:", err.response?.data || err.message);
-
-      alert(err.response?.data?.message || "Error submitting interview");
+      console.error(err.response?.data || err.message);
+      alert("Check console for error");
     }
   };
 
-  // ================= LOADING / EMPTY =================
-  if (!questions.length) {
+  // Loading state
+  if (!questions || questions.length === 0) {
     return <h2 style={{ padding: "40px" }}>Loading questions...</h2>;
   }
 
   const currentQuestion = questions[currentIndex];
 
   return (
-    <div style={{ padding: "40px", maxWidth: "600px", margin: "auto" }}>
+    <div style={{ padding: "40px", maxWidth: "600px", margin: "0 auto" }}>
       <h2>
         Question {currentIndex + 1} of {questions.length}
       </h2>
 
-      <p style={{ fontSize: "18px", margin: "20px 0" }}>
-        {currentQuestion.question}
+      <p style={{ fontSize: "18px", margin: "20px 0", fontWeight: "500" }}>
+        {currentQuestion?.question}
       </p>
 
       <textarea
-        value={answers[currentQuestion._id] || ""} // ✅ FIXED
-        onChange={(e) => handleChange(e.target.value)}
-        placeholder="Type your answer..."
+        placeholder="Type your answer here..."
+        value={answers[currentIndex] || ""}
+        onChange={(e) => handleChange(currentIndex, e.target.value)}
         style={{
           width: "100%",
           height: "150px",
-          padding: "10px",
+          padding: "15px",
+          borderRadius: "8px",
+          border: "1px solid #ccc",
           fontSize: "16px",
         }}
       />
 
-      {/* NAVIGATION */}
-      <div style={{ marginTop: "20px" }}>
-        <button onClick={prevQuestion} disabled={currentIndex === 0}>
+      <div style={{ marginTop: "20px", display: "flex", gap: "10px" }}>
+        <button
+          onClick={prevQuestion}
+          disabled={currentIndex === 0}
+          style={{
+            padding: "10px 20px",
+            cursor: currentIndex === 0 ? "not-allowed" : "pointer",
+          }}
+        >
           Previous
         </button>
 
         <button
           onClick={nextQuestion}
           disabled={currentIndex === questions.length - 1}
-          style={{ marginLeft: "10px" }}
+          style={{
+            padding: "10px 20px",
+            cursor:
+              currentIndex === questions.length - 1 ? "not-allowed" : "pointer",
+          }}
         >
           Next
         </button>
       </div>
 
-      {/* SUBMIT */}
       {currentIndex === questions.length - 1 && (
         <button
           onClick={submitInterview}
           style={{
             marginTop: "30px",
-            padding: "10px 20px",
-            background: "green",
-            color: "white",
+            padding: "12px 25px",
+            background: "#4a6cf7",
+            color: "#fff",
             border: "none",
+            borderRadius: "6px",
             cursor: "pointer",
+            width: "100%",
+            fontSize: "16px",
           }}
         >
           Submit Interview
