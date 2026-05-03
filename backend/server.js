@@ -11,6 +11,7 @@ const auth = require("./middleware/auth");
 const questionRoutes = require("./routes/questionRoutes");
 const authRoutes = require("./routes/authRoutes");
 const User = require("./models/User");
+const Interview = require("./models/Interview");
 
 // ===================== APP =====================
 const app = express();
@@ -33,24 +34,28 @@ mongoose
     process.exit(1);
   });
 
-  app.post("/api/interview/submit", (req, res) => {
+app.post("/api/interview/submit", async (req, res) => {
   try {
-    const { answers } = req.body;
+    const { answers, questions } = req.body;
 
-    console.log("Received answers:", answers);
+    const score = answers.filter((a) => a.answer.trim() !== "").length * 10;
 
-    if (!answers || answers.length === 0) {
-      return res.status(400).json({ message: "No answers provided" });
-    }
+    const questionList = questions.map((q) => q.question);
+    const answerList = answers.map((a) => a.answer);
 
-    const score = answers.filter(a => a.answer.trim() !== "").length * 10;
+    const newInterview = await Interview.create({
+      // userId: req.user.id  (add later if auth middleware ready)
+      score,
+      questions: questionList,
+      answers: answerList,
+    });
 
     res.status(200).json({
       data: {
-        score
-      }
+        score,
+        interviewId: newInterview._id,
+      },
     });
-
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
@@ -68,6 +73,16 @@ app.get("/dashboard", auth, async (req, res) => {
       message: "Welcome to your dashboard!",
       user,
     });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+app.get("/api/interview/history", async (req, res) => {
+  try {
+    const interviews = await Interview.find().sort({ createdAt: -1 });
+
+    res.json(interviews);
   } catch (err) {
     res.status(500).json({ message: "Server error" });
   }
