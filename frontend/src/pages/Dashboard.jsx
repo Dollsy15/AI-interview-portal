@@ -2,6 +2,15 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+} from "recharts";
+
 const Dashboard = () => {
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState("");
@@ -105,6 +114,11 @@ const Dashboard = () => {
 
   const bestScore =
     total > 0 ? Math.max(...history.map((item) => item.score)) : 0;
+
+  const chartData = history.map((item, index) => ({
+    name: `Attempt ${index + 1}`,
+    score: item.score,
+  }));
 
   return (
     <div
@@ -342,6 +356,23 @@ const Dashboard = () => {
           <h3>Best Score</h3>
           <p style={{ fontSize: "22px" }}>{bestScore}%</p>
         </div>
+      </div>
+
+      {/* 👇 ADD GRAPH HERE */}
+      <div style={{ padding: "40px 80px" }}>
+        <h2 style={{ marginBottom: "20px" }}>Performance Graph</h2>
+
+        {chartData.length === 0 ? (
+          <p>No data available</p>
+        ) : (
+          <LineChart width={600} height={300} data={chartData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Line type="monotone" dataKey="score" stroke="#4a6cf7" />
+          </LineChart>
+        )}
       </div>
 
       {/* 🔥 Interview History */}
