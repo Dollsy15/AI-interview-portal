@@ -235,6 +235,22 @@ const Dashboard = () => {
             >
               MCQ Practice
             </button>
+
+            <button
+              onClick={() => navigate("/upload-resume")}
+              style={{
+                padding: "14px 30px",
+                background: "#4a6cf7",
+                border: "none",
+                borderRadius: "8px",
+                color: "#fff",
+                fontSize: "16px",
+                cursor: "pointer",
+                boxShadow: "0 8px 20px rgba(74,108,247,0.3)",
+              }}
+            >
+              Upload Resume
+            </button>
           </div>
         </div>
 

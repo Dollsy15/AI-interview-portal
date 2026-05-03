@@ -9,6 +9,7 @@ import Interview from "./pages/Interview";
 import Result from "./pages/Result";
 import Coding from "./pages/Coding";
 import Mcqs from "./pages/Mcqs";
+import ResumeUpload from "./pages/ResumeUpload";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
       <Route path="/result" element={<Result />} />
       <Route path="/coding" element={<Coding />} />
       <Route path="/mcqs" element={<Mcqs />} />
+      <Route path="/upload-resume" element={<ResumeUpload />} />
       <Route
         path="/dashboard"
         element={
