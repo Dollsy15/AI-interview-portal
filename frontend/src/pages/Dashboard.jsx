@@ -83,61 +83,28 @@ const Dashboard = () => {
       );
 
       alert(`Your Score: ${res.data.score}`);
-
-      // Refresh dashboard stats
       window.location.reload();
     } catch (err) {
       alert("Error submitting answers");
     }
   };
 
-  <h2>Previous Interviews</h2>;
-
-  {
-    history.length === 0 ? (
-      <p>No interviews yet</p>
-    ) : (
-      history.map((item, index) => (
-        <div
-          key={index}
-          style={{
-            border: "1px solid #ccc",
-            padding: "15px",
-            marginBottom: "10px",
-            borderRadius: "8px",
-          }}
-        >
-          <p>
-            <b>Score:</b> {item.score}%
-          </p>
-          <p>
-            <b>Date:</b> {new Date(item.createdAt).toLocaleString()}
-          </p>
-
-          <button
-            onClick={() =>
-              navigate("/result", {
-                state: {
-                  score: item.score,
-                  questions: item.questions,
-                  answers: item.answers,
-                  feedback: "Review your answers and improve.",
-                },
-              })
-            }
-          >
-            View Result
-          </button>
-        </div>
-      ))
-    );
-  }
-
   if (error) return <h3 style={{ color: "red" }}>{error}</h3>;
   if (!userData) return <h3>Loading user info...</h3>;
 
   const userName =
     userData.user?.name || userData.user?.email?.split("@")[0] || "User";
+
+  // 🔥 NEW ANALYTICS
+  const total = history.length;
+
+  const avgScore =
+    total > 0
+      ? Math.round(history.reduce((acc, cur) => acc + cur.score, 0) / total)
+      : 0;
+
+  const bestScore =
+    total > 0 ? Math.max(...history.map((item) => item.score)) : 0;
 
   return (
     <div
@@ -199,22 +166,62 @@ const Dashboard = () => {
             confidence with real-world questions.
           </p>
 
-          <button
-            onClick={handleStartInterview}
+          <div
             style={{
               marginTop: "25px",
-              padding: "14px 30px",
-              background: "#4a6cf7",
-              border: "none",
-              borderRadius: "8px",
-              color: "#fff",
-              fontSize: "16px",
-              cursor: "pointer",
-              boxShadow: "0 8px 20px rgba(74,108,247,0.3)",
+              display: "flex",
+              gap: "15px",
+              flexWrap: "wrap",
             }}
           >
-            Start Interview
-          </button>
+            <button
+              onClick={handleStartInterview}
+              style={{
+                padding: "14px 30px",
+                background: "#4a6cf7",
+                border: "none",
+                borderRadius: "8px",
+                color: "#fff",
+                fontSize: "16px",
+                cursor: "pointer",
+                boxShadow: "0 8px 20px rgba(74,108,247,0.3)",
+              }}
+            >
+              Start Interview
+            </button>
+
+            <button
+              onClick={() => navigate("/coding")}
+              style={{
+                padding: "14px 30px",
+                background: "#4a6cf7",
+                border: "none",
+                borderRadius: "8px",
+                color: "#fff",
+                fontSize: "16px",
+                cursor: "pointer",
+                boxShadow: "0 8px 20px rgba(74,108,247,0.3)",
+              }}
+            >
+              Coding Practice
+            </button>
+
+            <button
+              onClick={() => navigate("/mcqs")}
+              style={{
+                padding: "14px 30px",
+                background: "#4a6cf7",
+                border: "none",
+                borderRadius: "8px",
+                color: "#fff",
+                fontSize: "16px",
+                cursor: "pointer",
+                boxShadow: "0 8px 20px rgba(74,108,247,0.3)",
+              }}
+            >
+              MCQ Practice
+            </button>
+          </div>
         </div>
 
         <img
@@ -249,7 +256,6 @@ const Dashboard = () => {
                   padding: "20px",
                   borderRadius: "12px",
                   boxShadow: "0 8px 20px rgba(0,0,0,0.05)",
-                  transition: "0.3s",
                 }}
               >
                 <p style={{ fontWeight: "600", marginBottom: "10px" }}>
@@ -299,47 +305,96 @@ const Dashboard = () => {
         )}
       </div>
 
-      {/* Stats Section */}
-      <div
-        style={{
-          padding: "50px 80px",
-          display: "flex",
-          gap: "30px",
-          flexWrap: "wrap",
-          justifyContent: "center",
-        }}
-      >
-        {[
-          {
-            label: "Interviews Taken",
-            value: userData.user?.stats?.interviewsTaken || 0,
-          },
-          {
-            label: "Avg. Score",
-            value: userData.user?.stats?.avgScore
-              ? userData.user.stats.avgScore.toFixed(1) + "%"
-              : "0%",
-          },
-          {
-            label: "Questions Practiced",
-            value: userData.user?.stats?.questionsPracticed || 0,
-          },
-        ].map((stat, i) => (
-          <div
-            key={i}
-            style={{
-              background: "#fff",
-              padding: "30px",
-              borderRadius: "12px",
-              minWidth: "200px",
-              textAlign: "center",
-              boxShadow: "0 8px 20px rgba(0,0,0,0.05)",
-            }}
-          >
-            <h2 style={{ color: "#4a6cf7" }}>{stat.value}</h2>
-            <p>{stat.label}</p>
-          </div>
-        ))}
+      {/* 🔥 Analytics Section */}
+      <div style={{ padding: "40px 80px", display: "flex", gap: "20px" }}>
+        <div
+          style={{
+            flex: 1,
+            background: "#fff",
+            padding: "20px",
+            borderRadius: "10px",
+          }}
+        >
+          <h3>Total Interviews</h3>
+          <p style={{ fontSize: "22px" }}>{total}</p>
+        </div>
+
+        <div
+          style={{
+            flex: 1,
+            background: "#fff",
+            padding: "20px",
+            borderRadius: "10px",
+          }}
+        >
+          <h3>Average Score</h3>
+          <p style={{ fontSize: "22px" }}>{avgScore}%</p>
+        </div>
+
+        <div
+          style={{
+            flex: 1,
+            background: "#fff",
+            padding: "20px",
+            borderRadius: "10px",
+          }}
+        >
+          <h3>Best Score</h3>
+          <p style={{ fontSize: "22px" }}>{bestScore}%</p>
+        </div>
+      </div>
+
+      {/* 🔥 Interview History */}
+      <div style={{ padding: "40px 80px" }}>
+        <h2>Previous Interviews</h2>
+
+        {history.length === 0 ? (
+          <p>No interviews yet</p>
+        ) : (
+          history.map((item, index) => (
+            <div
+              key={index}
+              style={{
+                border: "1px solid #ccc",
+                padding: "15px",
+                marginBottom: "10px",
+                borderRadius: "8px",
+                background: "#fff",
+              }}
+            >
+              <p>
+                <b>Score:</b> {item.score}%
+              </p>
+              <p>
+                <b>Date:</b> {new Date(item.createdAt).toLocaleString()}
+              </p>
+
+              <button
+                onClick={() =>
+                  navigate("/result", {
+                    state: {
+                      score: item.score,
+                      questions: item.questions,
+                      answers: item.answers,
+                      feedback: "Review your answers and improve.",
+                    },
+                  })
+                }
+                style={{
+                  marginTop: "10px",
+                  padding: "8px 15px",
+                  background: "#4a6cf7",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "6px",
+                  cursor: "pointer",
+                }}
+              >
+                View Result
+              </button>
+            </div>
+          ))
+        )}
       </div>
 
       {/* Footer */}
@@ -354,16 +409,6 @@ const Dashboard = () => {
       >
         <p>© 2026 AI Interview Portal. All rights reserved.</p>
       </footer>
-
-      <style>
-        {`
-          @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
-          }
-        `}
-      </style>
     </div>
   );
 };

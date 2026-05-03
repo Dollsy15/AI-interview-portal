@@ -7,6 +7,8 @@ import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Interview from "./pages/Interview";
 import Result from "./pages/Result";
+import Coding from "./pages/Coding";
+import Mcqs from "./pages/Mcqs";
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
       <Route path="/signup" element={<Signup />} />
       <Route path="/interview" element={<Interview />} />
       <Route path="/result" element={<Result />} />
+      <Route path="/coding" element={<Coding />} />
+      <Route path="/mcqs" element={<Mcqs />} />
       <Route
         path="/dashboard"
         element={
