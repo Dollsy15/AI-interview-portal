@@ -1,41 +1,38 @@
 const express = require("express");
 const multer = require("multer");
-const pdfParse = require("pdf-parse");
 const fs = require("fs");
-const OpenAI = require("openai");
+const Groq = require("groq-sdk");
 
 const router = express.Router();
 
-// 🔹 OpenAI setup
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+const groq = new Groq({
+  apiKey: process.env.GROQ_API_KEY,
 });
 
-// 🔹 Multer setup
 const upload = multer({ dest: "uploads/" });
 
-// 🔹 Route
 router.post("/analyze-resume", upload.single("resume"), async (req, res) => {
   try {
     const filePath = req.file.path;
-
-    // Extract text from PDF
     const dataBuffer = fs.readFileSync(filePath);
+
+    const pdfParseLib = require("pdf-parse");
+    const pdfParse = pdfParseLib.default || pdfParseLib;
     const pdfData = await pdfParse(dataBuffer);
     const resumeText = pdfData.text;
 
-    // 🤖 AI ANALYSIS
-    const aiResponse = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+    const response = await groq.chat.completions.create({
+      model: "llama-3.3-70b-versatile",
       messages: [
         {
           role: "system",
-          content: "You are a professional resume reviewer.",
+          content:
+            "You are a professional resume reviewer. Always respond with valid JSON only, no extra text.",
         },
         {
           role: "user",
           content: `
-Analyze this resume and return JSON in this format:
+Analyze this resume and return ONLY JSON in this exact format:
 
 {
   "score": "8/10",
@@ -51,10 +48,11 @@ ${resumeText}
       ],
     });
 
-    // Send result to frontend
-    res.json({
-      analysis: aiResponse.choices[0].message.content,
-    });
+    const text = response.choices[0].message.content;
+    const cleanText = text.replace(/```json|```/g, "").trim();
+    const parsed = JSON.parse(cleanText);
+
+    res.json({ analysis: JSON.stringify(parsed) });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Something went wrong" });

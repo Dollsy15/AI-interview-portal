@@ -53,7 +53,7 @@ app.use((req, res, next) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/questions", questionRoutes);
 app.use("/api", interviewRoutes);
-app.use("/analyze-resume", resumeRoutes);
+app.use("/", resumeRoutes);
 
 // ===================== MONGODB =====================
 mongoose
