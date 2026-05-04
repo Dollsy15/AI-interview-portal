@@ -11,7 +11,6 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    console.log("Login button clicked");  //
 
     if (!email || !password) {
       alert("Please fill all fields");
@@ -19,31 +18,24 @@ const Login = () => {
     }
 
     try {
-      const res = await axios.post("http://localhost:5000/login", {
+      const res = await axios.post("http://localhost:5000/api/auth/login", {
         email,
         password,
       });
 
-      console.log(res.data);
-
-      // Directly store token
       localStorage.setItem("token", res.data.token);
-
-      // Clear fields
       setEmail("");
       setPassword("");
-
-      // Redirect to dashboard
       navigate("/dashboard");
     } catch (err) {
-      alert("Login failed");
+      console.log("LOGIN ERROR:", err.response?.data || err.message);
+      alert(err.response?.data?.message || "Login failed");
     }
   };
 
   return (
     <div style={{ padding: "40px" }}>
       <h2>Login</h2>
-
       <form onSubmit={handleLogin}>
         <input
           type="email"
@@ -52,10 +44,8 @@ const Login = () => {
           onChange={(e) => setEmail(e.target.value)}
           style={{ width: "100%" }}
         />
-
         <br />
         <br />
-
         <div style={{ position: "relative", width: "100%" }}>
           <input
             type={showPassword ? "text" : "password"}
@@ -72,7 +62,6 @@ const Login = () => {
               border: "1px solid rgb(204, 204, 204)",
             }}
           />
-
           <span
             onClick={() => setShowPassword(!showPassword)}
             style={{
@@ -87,10 +76,8 @@ const Login = () => {
             {showPassword ? "🙈" : "👁️"}
           </span>
         </div>
-
         <br />
         <br />
-
         <button
           type="submit"
           style={{
@@ -106,20 +93,6 @@ const Login = () => {
         >
           Login
         </button>
-
-        <input
-          type="button"
-          value="Close"
-          style={{
-            padding: "10px 25px",
-            borderRadius: "8px",
-            border: "none",
-            fontSize: "16px",
-            cursor: "pointer",
-            backgroundColor: "#f5f5f5",
-            color: "black",
-          }}
-        />
       </form>
     </div>
   );
