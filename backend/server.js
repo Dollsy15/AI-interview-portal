@@ -3,7 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const interviewRoutes = require("./routes/interview");
@@ -18,14 +18,42 @@ const resumeRoutes = require("./routes/resume");
 const app = express();
 
 // ===================== MIDDLEWARE =====================
-app.use(cors());
-app.use(express.json());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  }),
+);
+
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true }));
+
+// 🔥 DEBUG 1: REQUEST LOGGER
+app.use((req, res, next) => {
+  console.log("➡️ API HIT:", req.method, req.url);
+  next();
+});
+
+// 🔥 DEBUG 2: BODY LOGGER
+app.use((req, res, next) => {
+  console.log("📦 BODY:", req.body);
+  next();
+});
+
+// 🔥 DEBUG 3: EXTRA CORS HEADERS SAFETY
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "http://localhost:5173");
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  next();
+});
 
 // ===================== ROUTES =====================
-app.use("/api/questions", questionRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/questions", questionRoutes);
 app.use("/api", interviewRoutes);
-app.use("/", resumeRoutes);
+app.use("/analyze-resume", resumeRoutes);
 
 // ===================== MONGODB =====================
 mongoose
@@ -33,9 +61,9 @@ mongoose
   .then(() => console.log("✅ MongoDB Connected Successfully"))
   .catch((err) => {
     console.error("❌ MongoDB error:", err);
-    process.exit(1);
   });
 
+// ===================== INTERVIEW SUBMIT =====================
 app.post("/api/interview/submit", async (req, res) => {
   try {
     const { answers, questions } = req.body;
@@ -46,7 +74,6 @@ app.post("/api/interview/submit", async (req, res) => {
     const answerList = answers.map((a) => a.answer);
 
     const newInterview = await Interview.create({
-      // userId: req.user.id  (add later if auth middleware ready)
       score,
       questions: questionList,
       answers: answerList,
@@ -80,71 +107,11 @@ app.get("/dashboard", auth, async (req, res) => {
   }
 });
 
+// ===================== HISTORY =====================
 app.get("/api/interview/history", async (req, res) => {
   try {
     const interviews = await Interview.find().sort({ createdAt: -1 });
-
     res.json(interviews);
-  } catch (err) {
-    res.status(500).json({ message: "Server error" });
-  }
-});
-
-// ===================== SIGNUP =====================
-app.post("/signup", async (req, res) => {
-  const { name, email, password } = req.body;
-
-  if (!email || !password)
-    return res.status(400).json({ message: "Fill all fields" });
-
-  try {
-    const existingUser = await User.findOne({ email });
-
-    if (existingUser)
-      return res.status(400).json({ message: "User already exists" });
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    await User.create({
-      name,
-      email,
-      password: hashedPassword,
-    });
-
-    res.json({ message: "Signup successful" });
-  } catch (err) {
-    res.status(500).json({ message: "Server error" });
-  }
-});
-
-// ===================== LOGIN =====================
-app.post("/login", async (req, res) => {
-  const { email, password } = req.body;
-
-  try {
-    const user = await User.findOne({ email });
-
-    if (!user) return res.status(400).json({ message: "Invalid credentials" });
-
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    if (!isMatch)
-      return res.status(400).json({ message: "Invalid credentials" });
-
-    const token = jwt.sign(
-      {
-        userId: user._id,
-        username: user.name,
-      },
-      process.env.JWT_SECRET,
-      { expiresIn: "1h" },
-    );
-
-    res.json({
-      message: "Login successful",
-      token,
-      user,
-    });
   } catch (err) {
     res.status(500).json({ message: "Server error" });
   }
