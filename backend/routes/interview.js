@@ -29,8 +29,7 @@ router.post("/submit-answers", authMiddleware, async (req, res) => {
       if (
         userAnswer &&
         q.correctAnswer &&
-        userAnswer.trim().toLowerCase() ===
-          q.correctAnswer.trim().toLowerCase()
+        userAnswer.trim().toLowerCase() === q.correctAnswer.trim().toLowerCase()
       ) {
         score++;
       }
@@ -39,9 +38,7 @@ router.post("/submit-answers", authMiddleware, async (req, res) => {
     const totalQuestions = questions.length;
 
     const percentageScore =
-      totalQuestions > 0
-        ? Math.round((score / totalQuestions) * 100)
-        : 0;
+      totalQuestions > 0 ? Math.round((score / totalQuestions) * 100) : 0;
 
     // ================= AI FEEDBACK =================
     let combinedAnswers = "";
@@ -70,12 +67,10 @@ Give:
 
       const response = await axios.post(
         "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct",
-        { inputs: prompt }
+        { inputs: prompt },
       );
 
-      feedback =
-        response.data?.[0]?.generated_text ||
-        "No feedback generated";
+      feedback = response.data?.[0]?.generated_text || "No feedback generated";
     } catch (err) {
       console.log("AI ERROR:", err.message);
     }
@@ -94,8 +89,7 @@ Give:
       const newInterviews = prev + 1;
 
       const newAvg =
-        (user.stats.avgScore * prev + percentageScore) /
-        newInterviews;
+        (user.stats.avgScore * prev + percentageScore) / newInterviews;
 
       user.stats.interviewsTaken = newInterviews;
       user.stats.avgScore = Math.round(newAvg);
@@ -110,13 +104,52 @@ Give:
       totalQuestions,
       feedback,
     });
-
   } catch (error) {
     console.log(error);
     res.status(500).json({
       message: "Internal Server Error",
       error: error.message,
     });
+  }
+});
+
+// ================= NEW ROUTE FOR FRONTEND =================
+router.post("/submit", authMiddleware, async (req, res) => {
+  try {
+    const { answers, questions } = req.body;
+
+    let score = 0;
+    let feedbackArray = [];
+
+    questions.forEach((q, i) => {
+      const ans = answers[i]?.answer || "";
+
+      if (ans.trim().length > 20) {
+        score++;
+        feedbackArray.push({
+          question: q.question,
+          remark: "Good answer",
+        });
+      } else {
+        feedbackArray.push({
+          question: q.question,
+          remark: "Too short, improve explanation",
+        });
+      }
+    });
+
+    const percentage =
+      questions.length > 0 ? Math.round((score / questions.length) * 100) : 0;
+
+    res.json({
+      data: {
+        score: percentage,
+        feedbackArray,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Error in submit route" });
   }
 });
 

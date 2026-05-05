@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 const Result = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const feedbackArray = location.state?.feedbackArray ?? [];
 
   // SAFE FALLBACKS
   const score = location.state?.score ?? 0;
@@ -45,6 +46,37 @@ const Result = () => {
         <h3>📊 AI Feedback</h3>
         <p>{feedback}</p>
       </div>
+
+      {/* 🧠 QUESTION-WISE FEEDBACK (ADDED) */}
+      {feedbackArray.length > 0 && (
+        <div
+          style={{
+            marginTop: "30px",
+            maxWidth: "700px",
+            marginLeft: "auto",
+            marginRight: "auto",
+            textAlign: "left",
+          }}
+        >
+          <h3>🧠 Question-wise Feedback</h3>
+
+          {feedbackArray.map((f, i) => (
+            <div
+              key={i}
+              style={{
+                marginBottom: "15px",
+                padding: "12px",
+                border: "1px solid #ddd",
+                borderRadius: "6px",
+                background: "#fff",
+              }}
+            >
+              <p><b>Q:</b> {f.question}</p>
+              <p><b>Feedback:</b> {f.remark}</p>
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* QUESTIONS + ANSWERS */}
       <div

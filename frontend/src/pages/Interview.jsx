@@ -7,6 +7,7 @@ const Interview = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState({});
   const navigate = useNavigate();
+  const [timeLeft, setTimeLeft] = useState(300);
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -23,6 +24,19 @@ const Interview = () => {
     };
     fetchQuestions();
   }, []);
+
+  useEffect(() => {
+    if (timeLeft <= 0) {
+      submitInterview();
+      return;
+    }
+
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [timeLeft]);
 
   const handleChange = (index, value) => {
     setAnswers((prev) => ({ ...prev, [index]: value }));
@@ -57,6 +71,7 @@ const Interview = () => {
         state: {
           score: result.score,
           feedback: "Good attempt! Improve clarity and depth.",
+          feedbackArray: result.feedbackArray, 
           questions: questions.map((q) => q.question),
           answers: questions.map((q, index) => answers[index] || ""),
         },
@@ -116,6 +131,10 @@ const Interview = () => {
           >
             AI Interview
           </h1>
+
+          <p style={{ color: "white", fontSize: "14px", marginTop: "8px" }}>
+            ⏱️ Time Left: {timeLeft}s
+          </p>
           <p
             style={{
               color: "rgba(255,255,255,0.8)",

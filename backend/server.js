@@ -53,7 +53,7 @@ app.use((req, res, next) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/questions", questionRoutes);
 app.use("/api", interviewRoutes);
-app.use("/api/resume", resumeRoutes); // ✅ FIXED: Changed from "/" to "/api/resume"
+app.use("/api/resume", resumeRoutes);
 
 // ===================== MONGODB =====================
 mongoose
@@ -68,8 +68,29 @@ app.post("/api/interview/submit", async (req, res) => {
   try {
     const { answers, questions } = req.body;
 
+    // ✅ SCORE CALCULATION
     const score = answers.filter((a) => a.answer.trim() !== "").length * 10;
 
+    // ✅ QUESTION-WISE FEEDBACK
+    let feedbackArray = [];
+
+    questions.forEach((q, i) => {
+      const ans = answers[i]?.answer || "";
+
+      if (ans.trim().length > 20) {
+        feedbackArray.push({
+          question: q.question,
+          remark: "Good answer",
+        });
+      } else {
+        feedbackArray.push({
+          question: q.question,
+          remark: "Too short, improve explanation",
+        });
+      }
+    });
+
+    // ✅ SAVE DATA
     const questionList = questions.map((q) => q.question);
     const answerList = answers.map((a) => a.answer);
 
@@ -79,10 +100,12 @@ app.post("/api/interview/submit", async (req, res) => {
       answers: answerList,
     });
 
+    // ✅ FINAL RESPONSE
     res.status(200).json({
       data: {
         score,
         interviewId: newInterview._id,
+        feedbackArray,
       },
     });
   } catch (err) {
