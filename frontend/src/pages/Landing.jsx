@@ -5,17 +5,9 @@ import SignupModal from "../components/SignupModal";
 const Landing = () => {
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-
-  const handleMouseMove = (e) => {
-    setMousePosition({
-      x: e.clientX / window.innerWidth,
-      y: e.clientY / window.innerHeight,
-    });
-  };
 
   return (
-    <div style={s.container} onMouseMove={handleMouseMove}>
+    <div style={s.container}>
       {/* Animated Background Elements */}
       <div style={s.bgGradient}></div>
       <div style={s.floatingOrb1}></div>
@@ -32,7 +24,10 @@ const Landing = () => {
           <div style={s.navButtons}>
             <button
               style={s.navLoginBtn}
-              onClick={() => setShowLogin(true)}
+              onClick={() => {
+                setShowSignup(false);
+                setShowLogin(true);
+              }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.background = "rgba(255,255,255,0.2)";
               }}
@@ -44,7 +39,10 @@ const Landing = () => {
             </button>
             <button
               style={s.navSignupBtn}
-              onClick={() => setShowSignup(true)}
+              onClick={() => {
+                setShowSignup(false);
+                setShowLogin(true);
+              }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = "scale(1.05)";
               }}
@@ -126,13 +124,12 @@ const Landing = () => {
             </button>
           </div>
 
-          {/* Trust Badges */}
           <div style={s.trustBadges}>
             <p style={s.trustText}>⭐ Trusted by students from 50+ countries</p>
           </div>
         </div>
 
-        {/* Right Side - Hero Visual */}
+        {/* Right Side - Static Hero Card */}
         <div style={s.heroRight}>
           <div style={s.heroCard}>
             <div style={s.cardGlow}></div>
@@ -158,21 +155,23 @@ const Landing = () => {
                 </div>
                 <p style={s.scoreText}>4.2/5.0</p>
               </div>
-            </div>
-          </div>
 
-          {/* Floating Elements */}
-          <div style={s.floatingElement1}>
-            <span style={s.elementIcon}>💡</span>
-            <p>Real-time Feedback</p>
-          </div>
-          <div style={s.floatingElement2}>
-            <span style={s.elementIcon}>🎯</span>
-            <p>Personalized Questions</p>
-          </div>
-          <div style={s.floatingElement3}>
-            <span style={s.elementIcon}>📊</span>
-            <p>Progress Tracking</p>
+              {/* Static badges inside card */}
+              <div style={s.staticBadgesRow}>
+                <div style={s.staticBadge}>
+                  <span style={s.badgeIcon}>💡</span>
+                  <span style={s.badgeLabel}>Real-time Feedback</span>
+                </div>
+                <div style={s.staticBadge}>
+                  <span style={s.badgeIcon}>🎯</span>
+                  <span style={s.badgeLabel}>Personalized</span>
+                </div>
+                <div style={s.staticBadge}>
+                  <span style={s.badgeIcon}>📊</span>
+                  <span style={s.badgeLabel}>Progress Tracking</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -219,10 +218,7 @@ const Landing = () => {
           ].map((feature, idx) => (
             <div
               key={idx}
-              style={{
-                ...s.featureCard,
-                animationDelay: `${idx * 0.1}s`,
-              }}
+              style={{ ...s.featureCard, animationDelay: `${idx * 0.1}s` }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = "translateY(-12px)";
                 e.currentTarget.style.boxShadow =
@@ -273,64 +269,44 @@ const Landing = () => {
       </footer>
 
       {/* Overlay */}
-      {(showLogin || showSignup) && <div style={s.overlay}></div>}
+      {(showLogin || showSignup) && (
+        <div
+          style={s.overlay}
+          onClick={() => {
+            setShowLogin(false);
+            setShowSignup(false);
+          }}
+        ></div>
+      )}
 
-      {/* Modals */}
       <LoginModal show={showLogin} onClose={() => setShowLogin(false)} />
       <SignupModal show={showSignup} onClose={() => setShowSignup(false)} />
 
-      {/* Animations */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap');
 
         @keyframes slideInUp {
-          from {
-            opacity: 0;
-            transform: translateY(40px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+          from { opacity: 0; transform: translateY(40px); }
+          to { opacity: 1; transform: translateY(0); }
         }
-
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-20px); }
-        }
-
         @keyframes floatOrb {
           0% { transform: translate(0, 0); }
           50% { transform: translate(50px, -50px); }
           100% { transform: translate(0, 0); }
         }
-
         @keyframes pulse {
           0%, 100% { opacity: 0.6; }
           50% { opacity: 1; }
         }
-
-        @keyframes glow {
-          0%, 100% { box-shadow: 0 0 30px rgba(102, 126, 234, 0.5); }
-          50% { box-shadow: 0 0 60px rgba(102, 126, 234, 0.8); }
-        }
-
         @keyframes slideDown {
-          from {
-            opacity: 0;
-            transform: translateY(-20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+          from { opacity: 0; transform: translateY(-20px); }
+          to { opacity: 1; transform: translateY(0); }
         }
       `}</style>
     </div>
   );
 };
 
-// ============ STYLES ============
 const s = {
   container: {
     minHeight: "100vh",
@@ -340,7 +316,6 @@ const s = {
     overflow: "hidden",
     position: "relative",
   },
-
   bgGradient: {
     position: "fixed",
     top: 0,
@@ -350,7 +325,6 @@ const s = {
     background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
     zIndex: -3,
   },
-
   floatingOrb1: {
     position: "fixed",
     width: "500px",
@@ -363,7 +337,6 @@ const s = {
     zIndex: -2,
     animation: "floatOrb 30s ease-in-out infinite",
   },
-
   floatingOrb2: {
     position: "fixed",
     width: "400px",
@@ -376,7 +349,6 @@ const s = {
     zIndex: -2,
     animation: "floatOrb 35s ease-in-out infinite reverse",
   },
-
   floatingOrb3: {
     position: "fixed",
     width: "300px",
@@ -389,8 +361,6 @@ const s = {
     zIndex: -2,
     animation: "floatOrb 40s ease-in-out infinite",
   },
-
-  // Navbar
   navbar: {
     position: "sticky",
     top: 0,
@@ -400,7 +370,6 @@ const s = {
     padding: "16px 0",
     zIndex: 50,
   },
-
   navContent: {
     maxWidth: "1300px",
     margin: "0 auto",
@@ -409,7 +378,6 @@ const s = {
     justifyContent: "space-between",
     alignItems: "center",
   },
-
   navBrand: {
     display: "flex",
     alignItems: "center",
@@ -418,21 +386,9 @@ const s = {
     fontSize: "20px",
     fontWeight: "700",
   },
-
-  navIcon: {
-    fontSize: "28px",
-    animation: "float 3s ease-in-out infinite",
-  },
-
-  navTitle: {
-    fontFamily: "'Space Grotesk', sans-serif",
-  },
-
-  navButtons: {
-    display: "flex",
-    gap: "12px",
-  },
-
+  navIcon: { fontSize: "28px" },
+  navTitle: { fontFamily: "'Space Grotesk', sans-serif" },
+  navButtons: { display: "flex", gap: "12px" },
   navLoginBtn: {
     padding: "10px 20px",
     background: "rgba(255,255,255,0.1)",
@@ -444,7 +400,6 @@ const s = {
     cursor: "pointer",
     transition: "all 0.3s ease",
   },
-
   navSignupBtn: {
     padding: "10px 24px",
     background:
@@ -457,8 +412,6 @@ const s = {
     cursor: "pointer",
     transition: "all 0.3s ease",
   },
-
-  // Hero Section
   heroSection: {
     maxWidth: "1300px",
     margin: "0 auto",
@@ -470,16 +423,8 @@ const s = {
     position: "relative",
     zIndex: 1,
   },
-
-  heroLeft: {
-    color: "white",
-    animation: "slideInUp 0.8s ease-out",
-  },
-
-  badgeContainer: {
-    marginBottom: "24px",
-  },
-
+  heroLeft: { color: "white", animation: "slideInUp 0.8s ease-out" },
+  badgeContainer: { marginBottom: "24px" },
   badge: {
     display: "inline-block",
     padding: "10px 20px",
@@ -490,7 +435,6 @@ const s = {
     fontWeight: "600",
     color: "rgba(255,255,255,0.9)",
   },
-
   mainTitle: {
     fontSize: "56px",
     fontWeight: "800",
@@ -498,7 +442,6 @@ const s = {
     margin: "0 0 24px",
     fontFamily: "'Space Grotesk', sans-serif",
   },
-
   gradient: {
     background:
       "linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7))",
@@ -506,7 +449,6 @@ const s = {
     WebkitBackgroundClip: "text",
     WebkitTextFillColor: "transparent",
   },
-
   description: {
     fontSize: "18px",
     color: "rgba(255,255,255,0.85)",
@@ -514,7 +456,6 @@ const s = {
     margin: "0 0 40px",
     maxWidth: "500px",
   },
-
   statsRow: {
     display: "grid",
     gridTemplateColumns: "repeat(3, 1fr)",
@@ -523,30 +464,19 @@ const s = {
     paddingBottom: "32px",
     borderBottom: "1px solid rgba(255,255,255,0.1)",
   },
-
-  statItem: {
-    textAlign: "center",
-  },
-
+  statItem: { textAlign: "center" },
   statValue: {
     fontSize: "32px",
     fontWeight: "800",
     margin: "0",
     color: "white",
   },
-
   statLabel: {
     fontSize: "14px",
     color: "rgba(255,255,255,0.7)",
     margin: "8px 0 0",
   },
-
-  ctaContainer: {
-    display: "flex",
-    gap: "16px",
-    marginBottom: "32px",
-  },
-
+  ctaContainer: { display: "flex", gap: "16px", marginBottom: "32px" },
   primaryBtn: {
     padding: "16px 40px",
     background: "white",
@@ -562,12 +492,7 @@ const s = {
     transition: "all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
     boxShadow: "0 20px 40px rgba(102, 126, 234, 0.3)",
   },
-
-  btnArrow: {
-    fontSize: "18px",
-    display: "inline-block",
-  },
-
+  btnArrow: { fontSize: "18px", display: "inline-block" },
   secondaryBtn: {
     padding: "16px 40px",
     background: "rgba(255,255,255,0.1)",
@@ -579,22 +504,13 @@ const s = {
     cursor: "pointer",
     transition: "all 0.3s ease",
   },
+  trustBadges: { paddingTop: "32px" },
+  trustText: { fontSize: "14px", color: "rgba(255,255,255,0.8)", margin: 0 },
 
-  trustBadges: {
-    paddingTop: "32px",
-  },
-
-  trustText: {
-    fontSize: "14px",
-    color: "rgba(255,255,255,0.8)",
-    margin: 0,
-  },
-
+  // RIGHT SIDE - static, no overflow
   heroRight: {
-    position: "relative",
-    animation: "float 4s ease-in-out infinite",
+    animation: "slideInUp 0.8s ease-out 0.2s both",
   },
-
   heroCard: {
     background: "rgba(255,255,255,0.95)",
     borderRadius: "20px",
@@ -602,9 +518,7 @@ const s = {
     boxShadow: "0 40px 80px rgba(0,0,0,0.2)",
     position: "relative",
     overflow: "hidden",
-    animation: "slideInUp 0.8s ease-out 0.2s both",
   },
-
   cardGlow: {
     position: "absolute",
     top: 0,
@@ -615,12 +529,7 @@ const s = {
       "radial-gradient(circle at top right, rgba(102, 126, 234, 0.1) 0%, transparent 70%)",
     pointerEvents: "none",
   },
-
-  cardContent: {
-    position: "relative",
-    zIndex: 1,
-  },
-
+  cardContent: { position: "relative", zIndex: 1 },
   cardHeader: {
     display: "flex",
     justifyContent: "space-between",
@@ -629,7 +538,6 @@ const s = {
     paddingBottom: "16px",
     borderBottom: "1px solid #e5e7eb",
   },
-
   cardTitle: {
     fontSize: "14px",
     fontWeight: "700",
@@ -637,7 +545,6 @@ const s = {
     textTransform: "uppercase",
     letterSpacing: "1px",
   },
-
   liveIndicator: {
     display: "inline-block",
     fontSize: "12px",
@@ -645,7 +552,6 @@ const s = {
     fontWeight: "700",
     animation: "pulse 2s ease-in-out infinite",
   },
-
   cardQuestion: {
     fontSize: "15px",
     fontWeight: "600",
@@ -653,34 +559,30 @@ const s = {
     marginBottom: "20px",
     lineHeight: "1.6",
   },
-
   cardResponse: {
     background: "#f9fafb",
     borderRadius: "12px",
     padding: "16px",
     marginBottom: "20px",
   },
-
   aiLabel: {
     fontSize: "13px",
     fontWeight: "700",
     color: "#667eea",
     margin: "0 0 8px",
   },
-
   feedback: {
     fontSize: "14px",
     color: "#374151",
     lineHeight: "1.6",
     margin: 0,
   },
-
   cardScore: {
     background: "#f9fafb",
     borderRadius: "12px",
     padding: "16px",
+    marginBottom: "20px",
   },
-
   scoreLabel: {
     fontSize: "12px",
     fontWeight: "700",
@@ -688,7 +590,6 @@ const s = {
     textTransform: "uppercase",
     margin: "0 0 8px",
   },
-
   scoreBar: {
     height: "8px",
     background: "#e5e7eb",
@@ -696,14 +597,12 @@ const s = {
     overflow: "hidden",
     marginBottom: "12px",
   },
-
   scoreProgress: {
     height: "100%",
     width: "84%",
     background: "linear-gradient(90deg, #667eea, #764ba2)",
     borderRadius: "4px",
   },
-
   scoreText: {
     fontSize: "14px",
     fontWeight: "700",
@@ -711,55 +610,34 @@ const s = {
     margin: 0,
   },
 
-  floatingElement1: {
-    position: "absolute",
-    top: "-30px",
-    left: "-60px",
-    background: "rgba(255,255,255,0.95)",
-    borderRadius: "16px",
-    padding: "16px 20px",
-    boxShadow: "0 20px 40px rgba(0,0,0,0.1)",
-    fontSize: "13px",
-    fontWeight: "600",
+  // Static badges row inside card
+  staticBadgesRow: {
+    display: "flex",
+    gap: "10px",
+    flexWrap: "wrap",
+  },
+  staticBadge: {
+    flex: "1",
+    minWidth: "90px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: "6px",
+    background: "linear-gradient(135deg, #f0f4ff, #f9fafb)",
+    border: "1px solid #e5e7eb",
+    borderRadius: "12px",
+    padding: "14px 10px",
     textAlign: "center",
-    animation: "float 3.5s ease-in-out infinite",
   },
-
-  floatingElement2: {
-    position: "absolute",
-    bottom: "-40px",
-    right: "-60px",
-    background: "rgba(255,255,255,0.95)",
-    borderRadius: "16px",
-    padding: "16px 20px",
-    boxShadow: "0 20px 40px rgba(0,0,0,0.1)",
-    fontSize: "13px",
+  badgeIcon: { fontSize: "22px" },
+  badgeLabel: {
+    fontSize: "11px",
     fontWeight: "600",
-    textAlign: "center",
-    animation: "float 4s ease-in-out infinite 0.5s",
+    color: "#374151",
+    lineHeight: "1.3",
   },
 
-  floatingElement3: {
-    position: "absolute",
-    top: "50%",
-    right: "-100px",
-    background: "rgba(255,255,255,0.95)",
-    borderRadius: "16px",
-    padding: "16px 20px",
-    boxShadow: "0 20px 40px rgba(0,0,0,0.1)",
-    fontSize: "13px",
-    fontWeight: "600",
-    textAlign: "center",
-    animation: "float 3.8s ease-in-out infinite 1s",
-  },
-
-  elementIcon: {
-    fontSize: "24px",
-    display: "block",
-    marginBottom: "8px",
-  },
-
-  // Features Section
+  // Features
   featuresSection: {
     maxWidth: "1300px",
     margin: "0 auto",
@@ -767,32 +645,23 @@ const s = {
     position: "relative",
     zIndex: 1,
   },
-
-  featureHeader: {
-    textAlign: "center",
-    marginBottom: "64px",
-    color: "white",
-  },
-
+  featureHeader: { textAlign: "center", marginBottom: "64px", color: "white" },
   featureTitle: {
     fontSize: "44px",
     fontWeight: "800",
     margin: "0 0 16px",
     fontFamily: "'Space Grotesk', sans-serif",
   },
-
   featureSubtitle: {
     fontSize: "18px",
     color: "rgba(255,255,255,0.8)",
     margin: 0,
   },
-
   featuresGrid: {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
     gap: "32px",
   },
-
   featureCard: {
     background: "rgba(255,255,255,0.95)",
     borderRadius: "16px",
@@ -801,19 +670,13 @@ const s = {
     transition: "all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
     animation: "slideInUp 0.6s ease-out both",
   },
-
-  featureIcon: {
-    fontSize: "48px",
-    marginBottom: "16px",
-  },
-
+  featureIcon: { fontSize: "48px", marginBottom: "16px" },
   featureCardTitle: {
     fontSize: "18px",
     fontWeight: "700",
     color: "#1a1a2e",
     margin: "0 0 12px",
   },
-
   featureCardDesc: {
     fontSize: "14px",
     color: "#666",
@@ -821,7 +684,7 @@ const s = {
     lineHeight: "1.6",
   },
 
-  // CTA Section
+  // CTA
   ctaSection: {
     maxWidth: "1000px",
     margin: "0 auto",
@@ -830,7 +693,6 @@ const s = {
     position: "relative",
     zIndex: 1,
   },
-
   ctaContent: {
     background: "rgba(255,255,255,0.12)",
     border: "1px solid rgba(255,255,255,0.25)",
@@ -839,7 +701,6 @@ const s = {
     backdropFilter: "blur(10px)",
     animation: "slideInUp 0.8s ease-out 0.4s both",
   },
-
   ctaTitle: {
     fontSize: "40px",
     fontWeight: "800",
@@ -847,13 +708,11 @@ const s = {
     margin: "0 0 16px",
     fontFamily: "'Space Grotesk', sans-serif",
   },
-
   ctaDesc: {
     fontSize: "18px",
     color: "rgba(255,255,255,0.8)",
     margin: "0 0 32px",
   },
-
   ctaBtn: {
     padding: "16px 48px",
     background: "white",
@@ -866,8 +725,6 @@ const s = {
     transition: "all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
     boxShadow: "0 20px 40px rgba(102, 126, 234, 0.3)",
   },
-
-  // Footer
   footer: {
     background: "rgba(0,0,0,0.2)",
     padding: "32px 0",
@@ -876,14 +733,7 @@ const s = {
     position: "relative",
     zIndex: 1,
   },
-
-  footerText: {
-    color: "rgba(255,255,255,0.7)",
-    fontSize: "14px",
-    margin: 0,
-  },
-
-  // Overlay
+  footerText: { color: "rgba(255,255,255,0.7)", fontSize: "14px", margin: 0 },
   overlay: {
     position: "fixed",
     top: 0,
