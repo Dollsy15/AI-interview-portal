@@ -1,22 +1,23 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const ResumeUpload = () => {
   const [file, setFile] = useState(null);
   const [analysis, setAnalysis] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [qLoading, setQLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleUpload = async () => {
     if (!file) {
       alert("Pehle file select karo!");
       return;
     }
-
     try {
       setLoading(true);
       const formData = new FormData();
       formData.append("resume", file);
-
       const res = await axios.post(
         "http://localhost:5000/analyze-resume",
         formData,
@@ -24,14 +25,36 @@ const ResumeUpload = () => {
           headers: { "Content-Type": "multipart/form-data" },
         },
       );
-
       const parsed = JSON.parse(res.data.analysis);
       setAnalysis(parsed);
     } catch (err) {
-      console.log("ERROR:", err.response?.data || err.message);
       alert(err.response?.data?.error || "Analysis failed");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleGenerateQuestions = async () => {
+    if (!file) {
+      alert("Pehle file select karo!");
+      return;
+    }
+    try {
+      setQLoading(true);
+      const formData = new FormData();
+      formData.append("resume", file);
+      const res = await axios.post(
+        "http://localhost:5000/generate-questions",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        },
+      );
+      navigate("/resume-interview", { state: { data: res.data } });
+    } catch (err) {
+      alert(err.response?.data?.error || "Failed to generate questions");
+    } finally {
+      setQLoading(false);
     }
   };
 
@@ -141,7 +164,6 @@ const ResumeUpload = () => {
               fontSize: "16px",
               fontWeight: "700",
               cursor: loading || !file ? "not-allowed" : "pointer",
-              letterSpacing: "0.5px",
             }}
           >
             {loading ? "⏳ Analyzing your resume..." : "🚀 Analyze Resume"}
@@ -177,25 +199,83 @@ const ResumeUpload = () => {
                 style={{
                   fontSize: "72px",
                   fontWeight: "800",
+                  lineHeight: 1,
+                  margin: "0 0 8px",
                   color:
                     scoreNum >= 7
                       ? "#22c55e"
                       : scoreNum >= 5
                         ? "#f59e0b"
                         : "#ef4444",
-                  lineHeight: 1,
-                  margin: "0 0 8px",
                 }}
               >
                 {analysis.score}
               </div>
-              <p style={{ color: "#999", fontSize: "14px", margin: 0 }}>
+              <p
+                style={{ color: "#999", fontSize: "14px", margin: "0 0 20px" }}
+              >
                 {scoreNum >= 7
                   ? "Great resume! Minor improvements needed."
                   : scoreNum >= 5
                     ? "Good start! Several areas to improve."
                     : "Needs significant improvements."}
               </p>
+
+              {/* Level + Skills */}
+              {analysis.level && (
+                <div style={{ marginBottom: "16px" }}>
+                  <span
+                    style={{
+                      background:
+                        analysis.level === "advanced"
+                          ? "#dcfce7"
+                          : analysis.level === "intermediate"
+                            ? "#fef9c3"
+                            : "#fee2e2",
+                      color:
+                        analysis.level === "advanced"
+                          ? "#16a34a"
+                          : analysis.level === "intermediate"
+                            ? "#ca8a04"
+                            : "#dc2626",
+                      padding: "6px 16px",
+                      borderRadius: "999px",
+                      fontSize: "13px",
+                      fontWeight: "700",
+                    }}
+                  >
+                    {analysis.level?.toUpperCase()} LEVEL
+                  </span>
+                </div>
+              )}
+
+              {analysis.skills && (
+                <div
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: "8px",
+                    justifyContent: "center",
+                    marginBottom: "8px",
+                  }}
+                >
+                  {analysis.skills.map((skill, i) => (
+                    <span
+                      key={i}
+                      style={{
+                        background: "#eff6ff",
+                        color: "#1d4ed8",
+                        padding: "4px 12px",
+                        borderRadius: "999px",
+                        fontSize: "13px",
+                        fontWeight: "600",
+                      }}
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* 3 Cards */}
@@ -206,7 +286,6 @@ const ResumeUpload = () => {
                 gap: "16px",
               }}
             >
-              {/* Strengths */}
               <div
                 style={{
                   background: "white",
@@ -222,9 +301,6 @@ const ResumeUpload = () => {
                     fontSize: "18px",
                     fontWeight: "700",
                     margin: "0 0 16px",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
                   }}
                 >
                   ✅ Strengths
@@ -246,7 +322,6 @@ const ResumeUpload = () => {
                 </ul>
               </div>
 
-              {/* Weaknesses */}
               <div
                 style={{
                   background: "white",
@@ -262,9 +337,6 @@ const ResumeUpload = () => {
                     fontSize: "18px",
                     fontWeight: "700",
                     margin: "0 0 16px",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
                   }}
                 >
                   ❌ Weaknesses
@@ -286,7 +358,6 @@ const ResumeUpload = () => {
                 </ul>
               </div>
 
-              {/* Suggestions */}
               <div
                 style={{
                   background: "white",
@@ -302,9 +373,6 @@ const ResumeUpload = () => {
                     fontSize: "18px",
                     fontWeight: "700",
                     margin: "0 0 16px",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
                   }}
                 >
                   💡 Suggestions
@@ -325,6 +393,85 @@ const ResumeUpload = () => {
                   ))}
                 </ul>
               </div>
+
+              {/* Missing Skills */}
+              {analysis.missingSkills && analysis.missingSkills.length > 0 && (
+                <div
+                  style={{
+                    background: "white",
+                    borderRadius: "16px",
+                    padding: "24px",
+                    boxShadow: "0 10px 40px rgba(0,0,0,0.08)",
+                    borderLeft: "5px solid #f59e0b",
+                  }}
+                >
+                  <h3
+                    style={{
+                      color: "#d97706",
+                      fontSize: "18px",
+                      fontWeight: "700",
+                      margin: "0 0 16px",
+                    }}
+                  >
+                    🎯 Missing Skills
+                  </h3>
+                  <div
+                    style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}
+                  >
+                    {analysis.missingSkills.map((skill, i) => (
+                      <span
+                        key={i}
+                        style={{
+                          background: "#fef3c7",
+                          color: "#92400e",
+                          padding: "4px 12px",
+                          borderRadius: "999px",
+                          fontSize: "13px",
+                          fontWeight: "600",
+                        }}
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Generate Questions Button */}
+            <div style={{ marginTop: "24px" }}>
+              <button
+                onClick={handleGenerateQuestions}
+                disabled={qLoading}
+                style={{
+                  width: "100%",
+                  padding: "16px",
+                  background: qLoading
+                    ? "#ccc"
+                    : "linear-gradient(135deg, #f59e0b, #d97706)",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "12px",
+                  fontSize: "18px",
+                  fontWeight: "700",
+                  cursor: qLoading ? "not-allowed" : "pointer",
+                  boxShadow: "0 8px 24px rgba(245,158,11,0.3)",
+                }}
+              >
+                {qLoading
+                  ? "⏳ Generating questions..."
+                  : "🎯 Start Personalized Interview"}
+              </button>
+              <p
+                style={{
+                  textAlign: "center",
+                  color: "rgba(255,255,255,0.7)",
+                  fontSize: "13px",
+                  marginTop: "8px",
+                }}
+              >
+                AI will generate interview questions based on your resume
+              </p>
             </div>
           </div>
         )}
