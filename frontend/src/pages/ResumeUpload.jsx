@@ -19,7 +19,7 @@ const ResumeUpload = () => {
       const formData = new FormData();
       formData.append("resume", file);
       const res = await axios.post(
-        "http://localhost:5000/analyze-resume",
+        "http://localhost:5000/api/resume/analyze-resume",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -44,7 +44,7 @@ const ResumeUpload = () => {
       const formData = new FormData();
       formData.append("resume", file);
       const res = await axios.post(
-        "http://localhost:5000/generate-questions",
+        "http://localhost:5000/api/resume/generate-questions",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
