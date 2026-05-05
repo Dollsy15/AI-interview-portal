@@ -13,6 +13,7 @@ const authRoutes = require("./routes/authRoutes");
 const User = require("./models/User");
 const Interview = require("./models/Interview");
 const resumeRoutes = require("./routes/resume");
+const codingRoutes = require("./routes/codingRoutes");
 
 // ===================== APP =====================
 const app = express();
@@ -54,6 +55,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/questions", questionRoutes);
 app.use("/api", interviewRoutes);
 app.use("/api/resume", resumeRoutes);
+app.use("/api/code", codingRoutes);
 
 // ===================== MONGODB =====================
 mongoose

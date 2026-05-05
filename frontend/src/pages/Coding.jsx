@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 const Coding = () => {
   const [answers, setAnswers] = useState({});
   const [currentIndex, setCurrentIndex] = useState(0);
   const [submitted, setSubmitted] = useState(false);
+  const [runResult, setRunResult] = useState(null);
 
   const questions = [
     {
@@ -25,6 +27,18 @@ const Coding = () => {
       tag: "Logic",
     },
   ];
+
+  const runCode = async () => {
+    try {
+      const res = await axios.post("http://localhost:5000/api/code/run", {
+        code: answers[currentIndex],
+      });
+
+      setRunResult(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const answeredCount = Object.values(answers).filter(
     (a) => a.trim() !== "",
@@ -400,6 +414,40 @@ const Coding = () => {
           </div>
 
           {/* Buttons */}
+
+          <button
+            onClick={runCode}
+            style={{
+              width: "100%",
+              marginBottom: "10px",
+              padding: "12px",
+              borderRadius: "10px",
+              border: "none",
+              background: "linear-gradient(135deg, #f59e0b, #d97706)",
+              color: "white",
+              fontSize: "15px",
+              fontWeight: "700",
+              cursor: "pointer",
+            }}
+          >
+            Run Code ▶️
+          </button>
+
+          {runResult && (
+            <div
+              style={{
+                background: "#0f172a",
+                color: "white",
+                padding: "10px",
+                borderRadius: "8px",
+                marginBottom: "10px",
+                fontSize: "14px",
+              }}
+            >
+              ✅ Passed: {runResult.passed} / {runResult.total}
+            </div>
+          )}
+
           <div
             style={{
               padding: "16px 24px",
