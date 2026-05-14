@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import {
   LineChart,
   Line,
@@ -95,15 +96,23 @@ const Dashboard = () => {
         },
       );
 
-      alert(`Your Score: ${res.data.score}`);
-      window.location.reload();
+      toast.success(`Your Score: ${res.data.score}`);
+      setTimeout(() => window.location.reload(), 1500);
     } catch (err) {
-      alert("Error submitting answers");
+      toast.error("Error submitting answers");
     }
   };
 
   if (error) return <h3 style={s.error}>{error}</h3>;
-  if (!userData) return <h3 style={s.loading}>Loading...</h3>;
+  if (!userData) return (
+    <div style={s.mainContainer}>
+      <div style={s.skeletonHeader}></div>
+      <div style={s.skeletonHero}></div>
+      <div style={s.statsContainer}>
+        {[1, 2, 3, 4].map(i => <div key={i} style={s.skeletonCard}></div>)}
+      </div>
+    </div>
+  );
 
   const userName =
     userData.user?.name || userData.user?.email?.split("@")[0] || "User";
@@ -1204,12 +1213,32 @@ const s = {
     textAlign: "center",
     padding: "20px",
   },
+  skeletonHeader: {
+    height: "80px",
+    background: "rgba(255,255,255,0.1)",
+    marginBottom: "40px",
+    animation: "pulse 1.5s infinite",
+  },
+  skeletonHero: {
+    height: "300px",
+    maxWidth: "1300px",
+    margin: "0 auto 40px",
+    background: "rgba(255,255,255,0.05)",
+    borderRadius: "20px",
+    animation: "pulse 1.5s infinite",
+  },
+  skeletonCard: {
+    height: "150px",
+    background: "rgba(255,255,255,0.05)",
+    borderRadius: "20px",
+    animation: "pulse 1.5s infinite",
+  },
 
   loading: {
     textAlign: "center",
     padding: "40px 20px",
     color: "white",
-  },
+  }
 };
 
 export default Dashboard;

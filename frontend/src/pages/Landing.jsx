@@ -1,10 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import LoginModal from "../components/LoginModal";
 import SignupModal from "../components/SignupModal";
 
 const Landing = () => {
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
+  const [typedText, setTypedText] = useState("");
+  const fullText = " Intelligent Coaching";
+
+  useEffect(() => {
+    let index = 0;
+    const interval = setInterval(() => {
+      setTypedText(fullText.slice(0, index));
+      index++;
+      if (index > fullText.length) {
+        clearInterval(interval);
+      }
+    }, 100);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div style={s.container}>
@@ -66,7 +80,8 @@ const Landing = () => {
 
           <h1 style={s.mainTitle}>
             Master Interviews with
-            <span style={s.gradient}> Intelligent Coaching</span>
+            <span style={s.gradient}>{typedText}</span>
+            <span style={s.cursor}>|</span>
           </h1>
 
           <p style={s.description}>
@@ -302,6 +317,10 @@ const Landing = () => {
           from { opacity: 0; transform: translateY(-20px); }
           to { opacity: 1; transform: translateY(0); }
         }
+        @keyframes blink {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0; }
+        }
       `}</style>
     </div>
   );
@@ -448,6 +467,12 @@ const s = {
     backgroundClip: "text",
     WebkitBackgroundClip: "text",
     WebkitTextFillColor: "transparent",
+  },
+  cursor: {
+    color: "rgba(255,255,255,0.9)",
+    fontWeight: "300",
+    animation: "blink 1s step-end infinite",
+    marginLeft: "4px",
   },
   description: {
     fontSize: "18px",

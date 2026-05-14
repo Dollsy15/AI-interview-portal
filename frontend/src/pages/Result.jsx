@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const Result = () => {
@@ -11,6 +11,21 @@ const Result = () => {
   const feedback = location.state?.feedback ?? "No feedback available";
   const answers = location.state?.answers ?? [];
   const questions = location.state?.questions ?? [];
+
+  const [displayScore, setDisplayScore] = useState(0);
+
+  useEffect(() => {
+    let current = 0;
+    const interval = setInterval(() => {
+      if (current < score) {
+        current += 1;
+        setDisplayScore(current);
+      } else {
+        clearInterval(interval);
+      }
+    }, 20); // Speed of the counter
+    return () => clearInterval(interval);
+  }, [score]);
 
   return (
     <div style={{ padding: "40px", textAlign: "center" }}>
@@ -25,7 +40,7 @@ const Result = () => {
           color: score >= 50 ? "green" : "red",
         }}
       >
-        Your Score: {score}%
+        Your Score: {displayScore}%
       </div>
 
       {/* OVERALL FEEDBACK */}

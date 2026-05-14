@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -16,7 +17,7 @@ const Signup = () => {
     e.preventDefault();
 
     if (!name || !email || !password) {
-      alert("Please fill all fields");
+      toast.error("Please fill all fields");
       return;
     }
 
@@ -28,14 +29,14 @@ const Signup = () => {
         password,
       });
 
-      alert(res.data.message || "Signup successful");
+      toast.success(res.data.message || "Signup successful");
       setName("");
       setEmail("");
       setPassword("");
 
       navigate("/dashboard");
     } catch (err) {
-      alert(err.response?.data?.message || "Signup failed");
+      toast.error(err.response?.data?.message || "Signup failed");
     } finally {
       setLoading(false);
     }

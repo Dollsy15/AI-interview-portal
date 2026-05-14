@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const ResumeUpload = () => {
   const [file, setFile] = useState(null);
@@ -11,7 +12,7 @@ const ResumeUpload = () => {
 
   const handleUpload = async () => {
     if (!file) {
-      alert("Pehle file select karo!");
+      toast.error("Please select a file!");
       return;
     }
     try {
@@ -27,8 +28,9 @@ const ResumeUpload = () => {
       );
       const parsed = JSON.parse(res.data.analysis);
       setAnalysis(parsed);
+      toast.success("Resume analyzed successfully!");
     } catch (err) {
-      alert(err.response?.data?.error || "Analysis failed");
+      toast.error(err.response?.data?.error || "Analysis failed");
     } finally {
       setLoading(false);
     }
@@ -36,7 +38,7 @@ const ResumeUpload = () => {
 
   const handleGenerateQuestions = async () => {
     if (!file) {
-      alert("Pehle file select karo!");
+      toast.error("Please select a file!");
       return;
     }
     try {
@@ -52,7 +54,7 @@ const ResumeUpload = () => {
       );
       navigate("/resume-interview", { state: { data: res.data } });
     } catch (err) {
-      alert(err.response?.data?.error || "Failed to generate questions");
+      toast.error(err.response?.data?.error || "Failed to generate questions");
     } finally {
       setQLoading(false);
     }
