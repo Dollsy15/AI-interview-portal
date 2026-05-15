@@ -6,33 +6,361 @@ const Coding = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [runResult, setRunResult] = useState(null);
+  const [language, setLanguage] = useState("javascript");
 
   const questions = [
     {
-      title: "Reverse a String",
-      description: "Write a function to reverse a string",
-      example: 'Input: "hello" → Output: "olleh"',
-      tag: "String",
-    },
-    {
-      title: "Maximum in Array",
-      description: "Find the maximum number in an array",
-      example: "Input: [3, 7, 1, 9, 4] → Output: 9",
+      title: "Two Sum",
+      description:
+        "Find indices of two numbers such that they add up to target.",
+      example:
+        "Input: nums = [2,7,11,15], target = 9 → Output: [0,1]",
       tag: "Array",
+      level: "Easy",
+
+      starterCode: {
+        javascript: `function twoSum(nums, target) {
+  
+}`,
+
+        java: `class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        
+    }
+}`,
+
+        cpp: `class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        
+    }
+};`,
+
+        python: `class Solution:
+    def twoSum(self, nums, target):
+        pass`,
+      },
     },
+
     {
-      title: "Palindrome Check",
-      description: "Check if a number is a palindrome",
-      example: "Input: 121 → Output: true",
-      tag: "Logic",
+      title: "Valid Parentheses",
+      description:
+        "Check if brackets are balanced using stack.",
+      example:
+        'Input: "()[]{}" → Output: true',
+      tag: "Stack",
+      level: "Medium",
+
+      starterCode: {
+        javascript: `function isValid(s) {
+  
+}`,
+
+        java: `class Solution {
+    public boolean isValid(String s) {
+        
+    }
+}`,
+
+        cpp: `class Solution {
+public:
+    bool isValid(string s) {
+        
+    }
+};`,
+
+        python: `class Solution:
+    def isValid(self, s):
+        pass`,
+      },
+    },
+
+    {
+      title: "Maximum Depth of Binary Tree",
+      description:
+        "Find the maximum depth of a binary tree.",
+      example:
+        "Input: root = [3,9,20,null,null,15,7] → Output: 3",
+      tag: "Trees",
+      level: "Easy",
+
+      starterCode: {
+        javascript: `function maxDepth(root) {
+  
+}`,
+
+        java: `class Solution {
+    public int maxDepth(TreeNode root) {
+        
+    }
+}`,
+
+        cpp: `class Solution {
+public:
+    int maxDepth(TreeNode* root) {
+        
+    }
+};`,
+
+        python: `class Solution:
+    def maxDepth(self, root):
+        pass`,
+      },
+    },
+
+    {
+      title: "Climbing Stairs",
+      description:
+        "Count distinct ways to reach the top.",
+      example:
+        "Input: n = 5 → Output: 8",
+      tag: "DP",
+      level: "Easy",
+
+      starterCode: {
+        javascript: `function climbStairs(n) {
+  
+}`,
+
+        java: `class Solution {
+    public int climbStairs(int n) {
+        
+    }
+}`,
+
+        cpp: `class Solution {
+public:
+    int climbStairs(int n) {
+        
+    }
+};`,
+
+        python: `class Solution:
+    def climbStairs(self, n):
+        pass`,
+      },
+    },
+
+    {
+      title: "Number of Islands",
+      description:
+        "Count the number of islands in a grid.",
+      example:
+        'Input: grid = [["1","1","0"],["0","1","0"]] → Output: 1',
+      tag: "Graphs",
+      level: "Medium",
+
+      starterCode: {
+        javascript: `function numIslands(grid) {
+  
+}`,
+
+        java: `class Solution {
+    public int numIslands(char[][] grid) {
+        
+    }
+}`,
+
+        cpp: `class Solution {
+public:
+    int numIslands(vector<vector<char>>& grid) {
+        
+    }
+};`,
+
+        python: `class Solution:
+    def numIslands(self, grid):
+        pass`,
+      },
+    },
+
+    {
+      title: "Reverse Linked List",
+      description:
+        "Reverse a singly linked list.",
+      example:
+        "Input: 1->2->3->4 → Output: 4->3->2->1",
+      tag: "Linked List",
+      level: "Easy",
+
+      starterCode: {
+        javascript: `function reverseList(head) {
+  
+}`,
+
+        java: `class Solution {
+    public ListNode reverseList(ListNode head) {
+        
+    }
+}`,
+
+        cpp: `class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        
+    }
+};`,
+
+        python: `class Solution:
+    def reverseList(self, head):
+        pass`,
+      },
+    },
+
+    {
+      title: "Longest Increasing Subsequence",
+      description:
+        "Find length of longest increasing subsequence.",
+      example:
+        "Input: [10,9,2,5,3,7,101,18] → Output: 4",
+      tag: "DP",
+      level: "Hard",
+
+      starterCode: {
+        javascript: `function lengthOfLIS(nums) {
+  
+}`,
+
+        java: `class Solution {
+    public int lengthOfLIS(int[] nums) {
+        
+    }
+}`,
+
+        cpp: `class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        
+    }
+};`,
+
+        python: `class Solution:
+    def lengthOfLIS(self, nums):
+        pass`,
+      },
+    },
+
+    {
+      title: "Binary Tree Level Order Traversal",
+      description:
+        "Return level order traversal of binary tree.",
+      example:
+        "Input: [3,9,20,null,null,15,7] → Output: [[3],[9,20],[15,7]]",
+      tag: "Trees",
+      level: "Medium",
+
+      starterCode: {
+        javascript: `function levelOrder(root) {
+  
+}`,
+
+        java: `class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        
+    }
+}`,
+
+        cpp: `class Solution {
+public:
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        
+    }
+};`,
+
+        python: `class Solution:
+    def levelOrder(self, root):
+        pass`,
+      },
+    },
+
+    {
+      title: "Detect Cycle in Graph",
+      description:
+        "Detect if a graph contains a cycle.",
+      example:
+        "Input: Graph edges → Output: true/false",
+      tag: "Graphs",
+      level: "Hard",
+
+      starterCode: {
+        javascript: `function hasCycle(graph) {
+  
+}`,
+
+        java: `class Solution {
+    public boolean hasCycle(int V, ArrayList<ArrayList<Integer>> adj) {
+        
+    }
+}`,
+
+        cpp: `class Solution {
+public:
+    bool hasCycle(int V, vector<int> adj[]) {
+        
+    }
+};`,
+
+        python: `class Solution:
+    def hasCycle(self, graph):
+        pass`,
+      },
+    },
+
+    {
+      title: "Coin Change",
+      description:
+        "Find minimum coins required to make amount.",
+      example:
+        "Input: coins = [1,2,5], amount = 11 → Output: 3",
+      tag: "DP",
+      level: "Medium",
+
+      starterCode: {
+        javascript: `function coinChange(coins, amount) {
+  
+}`,
+
+        java: `class Solution {
+    public int coinChange(int[] coins, int amount) {
+        
+    }
+}`,
+
+        cpp: `class Solution {
+public:
+    int coinChange(vector<int>& coins, int amount) {
+        
+    }
+};`,
+
+        python: `class Solution:
+    def coinChange(self, coins, amount):
+        pass`,
+      },
     },
   ];
 
+  const answeredCount = questions.filter((_, i) => 
+    Object.keys(answers).some(k => k.startsWith(`${i}-`) && answers[k]?.trim() !== "")
+  ).length;
+
+  const progress =
+    ((currentIndex + 1) / questions.length) * 100;
+
+  const isLast =
+    currentIndex === questions.length - 1;
+
+  const q = questions[currentIndex];
+
   const runCode = async () => {
     try {
-      const res = await axios.post("http://localhost:5000/api/code/run", {
-        code: answers[currentIndex],
-      });
+      const res = await axios.post(
+        "http://localhost:5000/api/code/run",
+        {
+          code: answers[`${currentIndex}-${language}`] ?? questions[currentIndex].starterCode[language],
+          language,
+        },
+      );
 
       setRunResult(res.data);
     } catch (err) {
@@ -40,17 +368,62 @@ const Coding = () => {
     }
   };
 
-  const answeredCount = Object.values(answers).filter(
-    (a) => a.trim() !== "",
-  ).length;
-  const progress = ((currentIndex + 1) / questions.length) * 100;
-  const isLast = currentIndex === questions.length - 1;
-  const q = questions[currentIndex];
+  const levelColors = {
+    Easy: {
+      bg: "#dcfce7",
+      color: "#15803d",
+    },
+
+    Medium: {
+      bg: "#fef3c7",
+      color: "#b45309",
+    },
+
+    Hard: {
+      bg: "#fee2e2",
+      color: "#b91c1c",
+    },
+  };
 
   const tagColors = {
-    String: { bg: "#eff6ff", color: "#1d4ed8" },
-    Array: { bg: "#f0fdf4", color: "#15803d" },
-    Logic: { bg: "#fdf4ff", color: "#7e22ce" },
+    Array: {
+      bg: "#eff6ff",
+      color: "#1d4ed8",
+    },
+
+    Stack: {
+      bg: "#fff7ed",
+      color: "#c2410c",
+    },
+
+    Trees: {
+      bg: "#ecfeff",
+      color: "#0f766e",
+    },
+
+    DP: {
+      bg: "#f3e8ff",
+      color: "#7e22ce",
+    },
+
+    Graphs: {
+      bg: "#fef2f2",
+      color: "#dc2626",
+    },
+
+    "Linked List": {
+      bg: "#f0fdf4",
+      color: "#15803d",
+    },
+  };
+
+  // ================= SUBMIT SCREEN =================
+  const getAnswerForQuestion = (i) => {
+    if (answers[`${i}-${language}`]?.trim()) return answers[`${i}-${language}`];
+    for (const lang of ["javascript", "java", "cpp", "python"]) {
+      if (answers[`${i}-${lang}`]?.trim()) return answers[`${i}-${lang}`];
+    }
+    return null;
   };
 
   if (submitted) {
@@ -59,109 +432,142 @@ const Coding = () => {
         style={{
           minHeight: "100vh",
           background: "var(--bg-gradient)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "20px",
+          padding: "40px 20px",
           fontFamily: "'Inter', sans-serif",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
         <div
           style={{
+            maxWidth: "850px",
+            width: "100%",
             background: "var(--bg-card)",
             borderRadius: "24px",
-            padding: "48px",
-            textAlign: "center",
-            maxWidth: "520px",
-            width: "100%",
-            boxShadow: "0 20px 60px rgba(0,0,0,0.3)",
-            color: "var(--text-primary)",
+            padding: "40px",
+            boxShadow: "0 20px 60px rgba(0,0,0,0.15)",
             border: "1px solid var(--border-color)",
           }}
         >
-          <div style={{ fontSize: "64px", marginBottom: "16px" }}>🎉</div>
-          <h2
+          <h1
             style={{
-              fontSize: "28px",
-              fontWeight: "700",
-              color: "#1f2937",
-              margin: "0 0 8px",
+              textAlign: "center",
+              marginBottom: "10px",
+              color: "var(--text-primary)",
             }}
           >
-            Code Submitted!
-          </h2>
-          <p style={{ color: "#6b7280", marginBottom: "32px" }}>
-            {answeredCount} of {questions.length} questions attempted
+            🎉 Coding Round Submitted
+          </h1>
+
+          <p
+            style={{
+              textAlign: "center",
+              color: "#6b7280",
+              marginBottom: "30px",
+            }}
+          >
+            {answeredCount} / {questions.length} attempted
           </p>
 
-          {questions.map((q, i) => (
+          {questions.map((question, i) => {
+            const ans = getAnswerForQuestion(i);
+            return (
             <div
               key={i}
               style={{
-                textAlign: "left",
-                padding: "16px",
-                borderRadius: "12px",
-                marginBottom: "12px",
-                background: answers[i]?.trim() ? "#f0fdf4" : "#fef2f2",
-                borderLeft: `4px solid ${answers[i]?.trim() ? "#22c55e" : "#ef4444"}`,
+                padding: "18px",
+                borderRadius: "16px",
+                marginBottom: "16px",
+                background: ans
+                  ? "rgba(34, 197, 94, 0.1)"
+                  : "rgba(239, 68, 68, 0.1)",
+                borderLeft: `5px solid ${ans
+                  ? "#22c55e"
+                  : "#ef4444"
+                  }`,
               }}
             >
-              <p
+              <div
                 style={{
-                  margin: "0 0 6px",
-                  fontWeight: "600",
-                  fontSize: "14px",
-                  color: "#374151",
+                  display: "flex",
+                  gap: "10px",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  marginBottom: "10px",
                 }}
               >
-                {answers[i]?.trim() ? "✅" : "❌"} {q.title}
-              </p>
-              {answers[i]?.trim() && (
+                <strong style={{ color: "var(--text-primary)" }}>
+                  {ans
+                    ? "✅"
+                    : "❌"}{" "}
+                  {question.title}
+                </strong>
+
+                <span
+                  style={{
+                    padding: "4px 10px",
+                    borderRadius: "999px",
+                    background:
+                      levelColors[question.level].bg,
+                    color:
+                      levelColors[question.level].color,
+                    fontSize: "12px",
+                    fontWeight: "700",
+                  }}
+                >
+                  {question.level}
+                </span>
+              </div>
+
+              {ans && (
                 <pre
                   style={{
-                    margin: 0,
-                    fontSize: "12px",
-                    color: "#374151",
-                    background: "#f8fafc",
-                    padding: "8px",
-                    borderRadius: "6px",
+                    background: "#0f172a",
+                    color: "#e2e8f0",
+                    padding: "16px",
+                    borderRadius: "10px",
                     overflow: "auto",
+                    fontSize: "13px",
                     fontFamily: "monospace",
                   }}
                 >
-                  {answers[i].trim().slice(0, 100)}
-                  {answers[i].length > 100 ? "..." : ""}
+                  {ans.slice(0, 300)}
+                  {ans.length > 300
+                    ? "..."
+                    : ""}
                 </pre>
               )}
             </div>
-          ))}
+          )})}
 
           <button
             onClick={() => {
               setAnswers({});
               setSubmitted(false);
               setCurrentIndex(0);
+              setRunResult(null);
             }}
             style={{
               width: "100%",
-              marginTop: "8px",
               padding: "14px",
-              background: "linear-gradient(135deg, #6366f1, #4f46e5)",
-              color: "white",
               border: "none",
               borderRadius: "12px",
-              fontSize: "16px",
+              background:
+                "linear-gradient(135deg,#4f46e5,#7c3aed)",
+              color: "white",
               fontWeight: "700",
               cursor: "pointer",
             }}
           >
-            Try Again 🔄
+            Restart Challenge 🔄
           </button>
         </div>
       </div>
     );
   }
 
+  // ================= MAIN PAGE =================
   return (
     <div
       style={{
@@ -169,69 +575,74 @@ const Coding = () => {
         background: "var(--bg-gradient)",
         padding: "40px 20px",
         fontFamily: "'Inter', sans-serif",
-        color: "var(--text-primary)",
       }}
     >
       <style>{`
         @media (max-width: 768px) {
-          h1 { font-size: 24px !important; }
-          .coding-container { padding: 20px 10px !important; }
-          .main-card { padding: 16px !important; }
-          .editor-textarea { height: 180px !important; }
-          .btn-row { flex-direction: column; }
+          .coding-title { font-size: 26px !important; }
+          .main-card { border-radius: 16px !important; }
+          .editor-textarea { height: 250px !important; }
+          .coding-btn-row { flex-direction: column; }
+          .coding-btn-row button { width: 100% !important; margin-bottom: 10px; }
         }
       `}</style>
-      <div className="coding-container" style={{ maxWidth: "760px", margin: "0 auto" }}>
+      <div
+        style={{
+          maxWidth: "900px",
+          margin: "0 auto",
+        }}
+      >
         {/* Header */}
-        <div style={{ textAlign: "center", marginBottom: "32px" }}>
+        <div
+          style={{
+            textAlign: "center",
+            marginBottom: "30px",
+            color: "white",
+          }}
+        >
           <h1
+            className="coding-title"
             style={{
-              color: "white",
-              fontSize: "32px",
-              fontWeight: "700",
-              margin: "0 0 8px",
+              fontSize: "34px",
+              marginBottom: "10px",
+              fontWeight: "800",
             }}
           >
-            Coding Practice
+            💻 Coding Practice Arena
           </h1>
-          <p
-            style={{
-              color: "rgba(255,255,255,0.6)",
-              fontSize: "15px",
-              margin: 0,
-            }}
-          >
+
+          <p>
             {answeredCount} of {questions.length} attempted
           </p>
         </div>
 
-        {/* Progress Bar */}
+        {/* Progress */}
         <div
           style={{
-            background: "rgba(255,255,255,0.1)",
+            height: "8px",
+            background: "rgba(255,255,255,0.2)",
             borderRadius: "999px",
-            height: "6px",
-            marginBottom: "24px",
             overflow: "hidden",
+            marginBottom: "25px",
           }}
         >
           <div
             style={{
               width: `${progress}%`,
               height: "100%",
-              background: "linear-gradient(90deg, #6366f1, #a855f7)",
-              borderRadius: "999px",
-              transition: "width 0.4s ease",
+              background:
+                "linear-gradient(90deg,#22c55e,#06b6d4)",
             }}
           />
         </div>
 
-        {/* Question Pills */}
+        {/* Question Numbers */}
         <div
           style={{
             display: "flex",
-            gap: "8px",
+            gap: "10px",
             justifyContent: "center",
+            flexWrap: "wrap",
             marginBottom: "24px",
           }}
         >
@@ -240,23 +651,24 @@ const Coding = () => {
               key={i}
               onClick={() => setCurrentIndex(i)}
               style={{
-                width: "36px",
-                height: "36px",
+                width: "40px",
+                height: "40px",
                 borderRadius: "50%",
                 background:
                   i === currentIndex
-                    ? "white"
-                    : answers[i]?.trim()
+                    ? "#667eea"
+                    : Object.keys(answers).some(k => k.startsWith(`${i}-`) && answers[k]?.trim() !== "")
                       ? "rgba(255,255,255,0.4)"
                       : "rgba(255,255,255,0.1)",
-                color: i === currentIndex ? "#4f46e5" : "white",
+                color:
+                  i === currentIndex
+                    ? "white"
+                    : "white",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontSize: "13px",
                 fontWeight: "700",
                 cursor: "pointer",
-                transition: "all 0.2s",
               }}
             >
               {i + 1}
@@ -269,225 +681,233 @@ const Coding = () => {
           className="main-card"
           style={{
             background: "var(--bg-card)",
-            borderRadius: "20px",
+            borderRadius: "24px",
             overflow: "hidden",
-            boxShadow: "0 20px 60px rgba(0,0,0,0.4)",
-            marginBottom: "20px",
+            boxShadow: "0 20px 60px rgba(0,0,0,0.2)",
             border: "1px solid var(--border-color)",
           }}
         >
-          {/* Card Header */}
+          {/* Header */}
           <div
             style={{
-              padding: "24px 28px",
+              padding: "28px",
               borderBottom: "1px solid var(--border-color)",
             }}
           >
             <div
               style={{
                 display: "flex",
-                alignItems: "center",
-                gap: "12px",
-                marginBottom: "8px",
+                gap: "10px",
+                flexWrap: "wrap",
+                marginBottom: "14px",
               }}
             >
-              <div
-                style={{
-                  background: "linear-gradient(135deg, #6366f1, #a855f7)",
-                  color: "white",
-                  width: "36px",
-                  height: "36px",
-                  borderRadius: "8px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontWeight: "700",
-                  fontSize: "15px",
-                  flexShrink: 0,
-                }}
-              >
-                {currentIndex + 1}
-              </div>
-              <h2
-                style={{
-                  color: "var(--text-primary)",
-                  fontSize: "20px",
-                  fontWeight: "700",
-                  margin: 0,
-                }}
-              >
-                {q.title}
-              </h2>
               <span
                 style={{
-                  padding: "4px 10px",
+                  padding: "5px 12px",
                   borderRadius: "999px",
-                  fontSize: "12px",
-                  fontWeight: "600",
                   background: tagColors[q.tag].bg,
                   color: tagColors[q.tag].color,
-                  marginLeft: "auto",
+                  fontSize: "12px",
+                  fontWeight: "700",
                 }}
               >
                 {q.tag}
               </span>
+
+              <span
+                style={{
+                  padding: "5px 12px",
+                  borderRadius: "999px",
+                  background:
+                    levelColors[q.level].bg,
+                  color:
+                    levelColors[q.level].color,
+                  fontSize: "12px",
+                  fontWeight: "700",
+                }}
+              >
+                {q.level}
+              </span>
             </div>
+
+            <h2
+              style={{
+                marginBottom: "10px",
+                color: "var(--text-primary)",
+                fontSize: "24px",
+              }}
+            >
+              {q.title}
+            </h2>
+
             <p
               style={{
                 color: "var(--text-secondary)",
-                margin: "0 0 8px",
+                marginBottom: "14px",
                 fontSize: "15px",
+                lineHeight: "1.6",
               }}
             >
               {q.description}
             </p>
+
             <div
               style={{
-                background: "rgba(255,255,255,0.05)",
-                borderRadius: "8px",
-                padding: "10px 14px",
+                background: "rgba(102, 126, 234, 0.1)",
+                padding: "16px",
+                borderRadius: "12px",
                 fontFamily: "monospace",
-                fontSize: "13px",
-                color: "#94a3b8",
+                fontSize: "14px",
+                color: "var(--text-primary)",
+                border: "1px solid rgba(102, 126, 234, 0.2)",
               }}
             >
               {q.example}
             </div>
           </div>
 
-          {/* Code Editor Area */}
-          <div style={{ padding: "0" }}>
-            {/* Fake editor top bar */}
-            <div
-              style={{
-                padding: "10px 16px",
-                background: "#0f172a",
-                display: "flex",
-                gap: "6px",
-                alignItems: "center",
-                borderBottom: "1px solid rgba(255,255,255,0.05)",
-              }}
-            >
-              <div
-                style={{
-                  width: "10px",
-                  height: "10px",
-                  borderRadius: "50%",
-                  background: "#ef4444",
-                }}
-              />
-              <div
-                style={{
-                  width: "10px",
-                  height: "10px",
-                  borderRadius: "50%",
-                  background: "#f59e0b",
-                }}
-              />
-              <div
-                style={{
-                  width: "10px",
-                  height: "10px",
-                  borderRadius: "50%",
-                  background: "#22c55e",
-                }}
-              />
-              <span
-                style={{
-                  color: "#64748b",
-                  fontSize: "12px",
-                  marginLeft: "8px",
-                }}
-              >
-                solution.js
-              </span>
-            </div>
-
-            <textarea
-              className="editor-textarea"
-              placeholder={`// Write your solution here...\nfunction solution() {\n  \n}`}
-              value={answers[currentIndex] || ""}
-              onChange={(e) =>
-                setAnswers({ ...answers, [currentIndex]: e.target.value })
-              }
-              style={{
-                width: "100%",
-                height: "220px",
-                padding: "20px",
-                background: "#0f172a",
-                color: "#e2e8f0",
-                border: "none",
-                fontSize: "14px",
-                fontFamily: "'Courier New', monospace",
-                resize: "vertical",
-                outline: "none",
-                lineHeight: "1.7",
-                boxSizing: "border-box",
-              }}
-            />
-          </div>
-
-          {/* Buttons */}
-
-          <button
-            onClick={runCode}
+          {/* Language Selector */}
+          <div
             style={{
-              width: "100%",
-              marginBottom: "10px",
-              padding: "12px",
-              borderRadius: "10px",
-              border: "none",
-              background: "linear-gradient(135deg, #f59e0b, #d97706)",
-              color: "white",
-              fontSize: "15px",
-              fontWeight: "700",
-              cursor: "pointer",
+              padding: "16px 24px",
+              borderBottom: "1px solid var(--border-color)",
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+              background: "rgba(0,0,0,0.02)",
             }}
           >
-            Run Code ▶️
-          </button>
+            <label
+              style={{
+                fontWeight: "600",
+                color: "var(--text-secondary)",
+              }}
+            >
+              Select Language:
+            </label>
 
+            <select
+              value={language}
+              onChange={(e) => {
+                setLanguage(e.target.value);
+              }}
+              style={{
+                padding: "10px 14px",
+                borderRadius: "10px",
+                border: "1px solid var(--border-color)",
+                outline: "none",
+                cursor: "pointer",
+                background: "var(--bg-card)",
+                color: "var(--text-primary)",
+                fontWeight: "500",
+              }}
+            >
+              <option value="javascript">
+                JavaScript
+              </option>
+
+              <option value="java">Java</option>
+
+              <option value="cpp">C++</option>
+
+              <option value="python">Python</option>
+            </select>
+          </div>
+
+          {/* Editor */}
+          <textarea
+            className="editor-textarea"
+            value={
+              answers[`${currentIndex}-${language}`] ??
+              questions[currentIndex].starterCode[language]
+            }
+            onChange={(e) =>
+              setAnswers({
+                ...answers,
+                [`${currentIndex}-${language}`]: e.target.value,
+              })
+            }
+            style={{
+              width: "100%",
+              height: "340px",
+              background: "#0f172a",
+              color: "#e2e8f0",
+              border: "none",
+              outline: "none",
+              padding: "24px",
+              fontFamily: "monospace",
+              fontSize: "15px",
+              lineHeight: "1.7",
+              resize: "vertical",
+              boxSizing: "border-box",
+            }}
+          />
+
+          {/* Run Result */}
           {runResult && (
             <div
               style={{
-                background: "#0f172a",
+                padding: "14px 20px",
+                background: "#111827",
                 color: "white",
-                padding: "10px",
-                borderRadius: "8px",
-                marginBottom: "10px",
-                fontSize: "14px",
               }}
             >
-              ✅ Passed: {runResult.passed} / {runResult.total}
+              ✅ Passed: {runResult.passed} /{" "}
+              {runResult.total}
             </div>
           )}
 
+          {/* Buttons */}
           <div
-            className="btn-row"
+            className="coding-btn-row"
             style={{
-              padding: "16px 24px",
-              background: "transparent",
-              borderTop: "1px solid var(--border-color)",
               display: "flex",
-              gap: "12px",
+              gap: "14px",
+              padding: "24px",
+              borderTop: "1px solid var(--border-color)",
+              background: "rgba(0,0,0,0.02)",
             }}
           >
             <button
-              onClick={() => setCurrentIndex((p) => p - 1)}
               disabled={currentIndex === 0}
+              onClick={() =>
+                setCurrentIndex((prev) => prev - 1)
+              }
               style={{
                 flex: 1,
-                padding: "12px",
-                borderRadius: "10px",
-                border: "1px solid rgba(255,255,255,0.15)",
+                padding: "14px",
+                borderRadius: "12px",
+                border: "1px solid var(--border-color)",
                 background: "transparent",
-                color: currentIndex === 0 ? "rgba(255,255,255,0.2)" : "var(--text-primary)",
-                fontSize: "15px",
+                color: "var(--text-primary)",
                 fontWeight: "600",
-                cursor: currentIndex === 0 ? "not-allowed" : "pointer",
+                cursor:
+                  currentIndex === 0
+                    ? "not-allowed"
+                    : "pointer",
+                opacity:
+                  currentIndex === 0 ? 0.5 : 1,
               }}
             >
               ← Previous
+            </button>
+
+            <button
+              onClick={runCode}
+              style={{
+                flex: 1,
+                padding: "14px",
+                borderRadius: "12px",
+                border: "none",
+                background:
+                  "linear-gradient(135deg,#f59e0b,#d97706)",
+                color: "white",
+                fontWeight: "700",
+                cursor: "pointer",
+              }}
+            >
+              Run Code ▶️
             </button>
 
             {isLast ? (
@@ -495,30 +915,32 @@ const Coding = () => {
                 onClick={() => setSubmitted(true)}
                 style={{
                   flex: 1,
-                  padding: "12px",
-                  borderRadius: "10px",
+                  padding: "14px",
+                  borderRadius: "12px",
                   border: "none",
-                  background: "linear-gradient(135deg, #22c55e, #16a34a)",
+                  background:
+                    "linear-gradient(135deg,#22c55e,#16a34a)",
                   color: "white",
-                  fontSize: "15px",
                   fontWeight: "700",
                   cursor: "pointer",
                 }}
               >
-                Submit Code 🚀
+                Submit 🚀
               </button>
             ) : (
               <button
-                onClick={() => setCurrentIndex((p) => p + 1)}
+                onClick={() =>
+                  setCurrentIndex((prev) => prev + 1)
+                }
                 style={{
                   flex: 1,
-                  padding: "12px",
-                  borderRadius: "10px",
+                  padding: "14px",
+                  borderRadius: "12px",
                   border: "none",
-                  background: "linear-gradient(135deg, #6366f1, #4f46e5)",
+                  background:
+                    "linear-gradient(135deg,#4f46e5,#7c3aed)",
                   color: "white",
-                  fontSize: "15px",
-                  fontWeight: "600",
+                  fontWeight: "700",
                   cursor: "pointer",
                 }}
               >
@@ -531,11 +953,13 @@ const Coding = () => {
         <p
           style={{
             textAlign: "center",
-            color: "rgba(255,255,255,0.3)",
+            color: "rgba(255,255,255,0.7)",
+            marginTop: "18px",
             fontSize: "13px",
           }}
         >
-          Click any number above to jump to that question
+          Click any question number above to jump
+          directly
         </p>
       </div>
     </div>

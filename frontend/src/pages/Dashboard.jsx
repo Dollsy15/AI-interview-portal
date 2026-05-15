@@ -165,13 +165,6 @@ const Dashboard = () => {
       color: "#667eea",
       gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
     },
-    {
-      label: "Total Questions",
-      value: questions.length,
-      icon: "❓",
-      color: "#764ba2",
-      gradient: "linear-gradient(135deg, #764ba2 0%, #667eea 100%)",
-    },
   ];
 
   const menuItems = [
@@ -331,7 +324,6 @@ const Dashboard = () => {
           <div style={s.tabButtons}>
             {[
               { id: "overview", label: "Overview", icon: "📊" },
-              { id: "practice", label: "Practice", icon: "📝" },
               { id: "history", label: "History", icon: "⏳" },
             ].map((tab) => (
               <button
@@ -354,7 +346,7 @@ const Dashboard = () => {
             {activeTab === "overview" && (
               <div style={s.tabPane}>
                 <div style={s.tabPaneHeader}>
-                  <h3 style={s.tabTitle}>📈 Performance Analytics</h3>
+                  <h3 style={s.analyticsHeading}>📈 Performance Analytics</h3>
                   <p style={s.tabSubtitle}>
                     Track your improvement across all interviews
                   </p>
@@ -393,11 +385,11 @@ const Dashboard = () => {
                         </defs>
                         <CartesianGrid
                           strokeDasharray="3 3"
-                          stroke="#e5e7eb"
+                          stroke="var(--analytics-heading-color)"
                           opacity={0.5}
                         />
-                        <XAxis dataKey="name" stroke="#9ca3af" />
-                        <YAxis stroke="#9ca3af" />
+                        <XAxis dataKey="name" stroke="var(--analytics-heading-color)" />
+                        <YAxis stroke="var(--analytics-heading-color)" />
                         <Tooltip
                           contentStyle={{
                             ...s.tooltipStyle,
@@ -420,66 +412,7 @@ const Dashboard = () => {
               </div>
             )}
 
-            {/* Practice Tab */}
-            {activeTab === "practice" && (
-              <div style={s.tabPane}>
-                <div style={s.tabPaneHeader}>
-                  <h3 style={s.tabTitle}>📝 Practice Questions</h3>
-                  <p style={s.tabSubtitle}>
-                    {questions.length} questions available
-                  </p>
-                </div>
 
-                {questions.length === 0 ? (
-                  <div style={s.emptyState}>
-                    <div style={s.emptyIcon}>❌</div>
-                    <p style={s.emptyText}>No questions available yet</p>
-                  </div>
-                ) : (
-                  <>
-                    <div style={s.questionsGrid}>
-                      {questions.map((q, idx) => (
-                        <div
-                          key={q._id || q.id}
-                          style={s.questionCard}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.transform =
-                              "translateY(-8px)";
-                            e.currentTarget.style.boxShadow =
-                              "0 20px 50px rgba(102, 126, 234, 0.2)";
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.transform = "translateY(0)";
-                            e.currentTarget.style.boxShadow =
-                              "0 10px 30px rgba(0,0,0,0.08)";
-                          }}
-                        >
-                          <div style={s.questionNumber}>{idx + 1}</div>
-                          <p style={s.questionText}>{q.question}</p>
-                          <textarea
-                            placeholder="Write your answer here..."
-                            value={answers[q._id || q.id] || ""}
-                            onChange={(e) =>
-                              setAnswers((prev) => ({
-                                ...prev,
-                                [q._id || q.id]: e.target.value,
-                              }))
-                            }
-                            style={s.questionTextarea}
-                          />
-                        </div>
-                      ))}
-                    </div>
-
-                    <div style={s.submitBtnContainer}>
-                      <button onClick={submitAnswers} style={s.submitBtn}>
-                        ✨ Submit All Answers
-                      </button>
-                    </div>
-                  </>
-                )}
-              </div>
-            )}
 
             {/* History Tab */}
             {activeTab === "history" && (
@@ -573,6 +506,22 @@ const Dashboard = () => {
       </footer>
 
       <style>{`
+        :root[data-theme="light"] {
+          --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          --text-primary: #1f2937;
+          --bg-card: #ffffff;
+          --border-color: #e5e7eb;
+          --analytics-heading-color: #000000;
+        }
+
+        :root[data-theme="dark"] {
+          --bg-gradient: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+          --text-primary: #f3f4f6;
+          --bg-card: #1f2937;
+          --border-color: #374151;
+          --analytics-heading-color: #000000;
+        }
+
         @keyframes slideInUp {
           from {
             opacity: 0;
@@ -1065,6 +1014,13 @@ const s = {
     marginBottom: "32px",
   },
 
+  analyticsHeading: {
+    fontSize: "24px",
+    fontWeight: "700",
+    color: "var(--analytics-heading-color)",
+    margin: "0 0 8px",
+  },
+
   tabTitle: {
     fontSize: "24px",
     fontWeight: "700",
@@ -1096,10 +1052,11 @@ const s = {
   },
 
   chartContainer: {
-    background: "#f9fafb",
-    borderRadius: "16px",
+    background: "var(--bg-card)",
+    borderRadius: "20px",
     padding: "32px",
-    border: "1px solid #e5e7eb",
+    border: "1px solid var(--border-color)",
+    boxShadow: "0 10px 30px rgba(0,0,0,0.05)",
   },
 
   tooltipStyle: {
@@ -1107,61 +1064,7 @@ const s = {
     border: "1px solid #e5e7eb",
     borderRadius: "12px",
     padding: "16px",
-  },
-
-  questionsGrid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))",
-    gap: "24px",
-    marginBottom: "40px",
-  },
-
-  questionCard: {
-    background: "var(--bg-card)",
-    border: "1px solid var(--border-color)",
-    borderRadius: "16px",
-    padding: "24px",
-    position: "relative",
-    transition: "all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
-  },
-
-  questionNumber: {
-    position: "absolute",
-    top: "-14px",
-    left: "24px",
-    width: "40px",
-    height: "40px",
-    background: "linear-gradient(135deg, #667eea, #764ba2)",
-    borderRadius: "50%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontWeight: "800",
-    color: "white",
-    fontSize: "16px",
-    boxShadow: "0 10px 30px rgba(102, 126, 234, 0.3)",
-  },
-
-  questionText: {
-    fontSize: "15px",
-    fontWeight: "600",
-    color: "var(--text-primary)",
-    marginBottom: "16px",
-    marginTop: "12px",
-    lineHeight: "1.5",
-  },
-
-  questionTextarea: {
-    width: "100%",
-    minHeight: "110px",
-    padding: "12px 16px",
-    border: "1px solid #e5e7eb",
-    borderRadius: "10px",
-    fontSize: "14px",
-    fontFamily: "sans-serif",
-    color: "var(--text-primary)",
-    resize: "vertical",
-    transition: "all 0.3s ease",
+    color: "#000000",
   },
 
   submitBtnContainer: {

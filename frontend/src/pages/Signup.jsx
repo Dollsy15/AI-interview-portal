@@ -60,7 +60,7 @@ const Signup = () => {
 
         {/* Form */}
         <form onSubmit={handleSignup} style={s.form}>
-          
+
           {/* Name */}
           <div style={s.fieldGroup}>
             <label style={s.label}>Full Name</label>
@@ -83,7 +83,7 @@ const Signup = () => {
                 onChange={(e) => setName(e.target.value)}
                 onFocus={() => setFocusedField("name")}
                 onBlur={() => setFocusedField(null)}
-                style={s.input}
+                style={{ ...s.input, color: "#000000" }}
               />
             </div>
           </div>
@@ -110,7 +110,7 @@ const Signup = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 onFocus={() => setFocusedField("email")}
                 onBlur={() => setFocusedField(null)}
-                style={s.input}
+                style={{ ...s.input, color: "#000000" }}
               />
             </div>
           </div>
@@ -139,7 +139,7 @@ const Signup = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 onFocus={() => setFocusedField("password")}
                 onBlur={() => setFocusedField(null)}
-                style={{ ...s.input, paddingRight: "44px" }}
+                style={{ ...s.input, paddingRight: "44px", color: "#000000" }}
               />
               <span
                 onClick={() => setShowPassword(!showPassword)}
@@ -172,6 +172,35 @@ const Signup = () => {
           </span>
         </p>
       </div>
+
+      <style>{`
+        :root {
+          --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          --bg-card: #ffffff;
+          --text-primary: #000000;
+          --text-secondary: #666666;
+          --border-color: #e5e7eb;
+        }
+
+        :root[data-theme="dark"] {
+          --bg-gradient: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+          --bg-card: #1f2937;
+          --text-primary: #000000;
+          --text-secondary: #9ca3af;
+          --border-color: #374151;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap');
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(30px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes floatOrb {
+          0% { transform: translate(0,0); }
+          50% { transform: translate(40px, -40px); }
+          100% { transform: translate(0,0); }
+        }
+      `}</style>
     </div>
   );
 };
@@ -197,6 +226,8 @@ const s = {
     borderRadius: "50%",
     top: "-200px",
     right: "-100px",
+    animation: "floatOrb 30s ease-in-out infinite",
+    pointerEvents: "none",
   },
   orb2: {
     position: "fixed",
@@ -207,6 +238,8 @@ const s = {
     borderRadius: "50%",
     bottom: "-150px",
     left: "-100px",
+    animation: "floatOrb 35s ease-in-out infinite reverse",
+    pointerEvents: "none",
   },
   card: {
     background: "var(--bg-card)",
@@ -215,29 +248,39 @@ const s = {
     width: "100%",
     maxWidth: "440px",
     boxShadow: "0 40px 80px rgba(0,0,0,0.2)",
+    position: "relative",
+    overflow: "hidden",
+    animation: "fadeUp 0.7s ease-out both",
   },
   cardGlow: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
     height: "4px",
     background: "linear-gradient(90deg, #667eea, #764ba2)",
     borderRadius: "24px 24px 0 0",
-    marginBottom: "20px",
   },
   header: {
     textAlign: "center",
-    marginBottom: "30px",
+    marginBottom: "36px",
   },
   iconWrap: {
     fontSize: "40px",
-    marginBottom: "10px",
+    marginBottom: "16px",
+    display: "block",
   },
   title: {
     fontSize: "28px",
     fontWeight: "800",
     color: "var(--text-primary)",
+    margin: "0 0 8px",
+    fontFamily: "'Space Grotesk', sans-serif",
   },
   subtitle: {
     fontSize: "14px",
     color: "var(--text-secondary)",
+    margin: 0,
   },
   form: {
     display: "flex",
@@ -253,6 +296,7 @@ const s = {
     fontSize: "13px",
     fontWeight: "600",
     color: "var(--text-secondary)",
+    letterSpacing: "0.3px",
   },
   inputWrap: {
     display: "flex",
@@ -260,39 +304,56 @@ const s = {
     border: "1.5px solid var(--border-color)",
     borderRadius: "10px",
     background: "transparent",
+    transition: "all 0.2s ease",
+    overflow: "hidden",
   },
   inputIcon: {
+    fontSize: "16px",
     padding: "0 12px",
+    flexShrink: 0,
   },
   input: {
     flex: 1,
     border: "none",
     outline: "none",
     background: "transparent",
-    padding: "12px 0",
-    color: "var(--text-primary)",
+    fontSize: "15px",
+    color: "#000000",
+    padding: "13px 0",
+    fontFamily: "'Inter', sans-serif",
   },
   eyeToggle: {
     padding: "0 14px",
     cursor: "pointer",
+    fontSize: "18px",
+    flexShrink: 0,
+    userSelect: "none",
   },
   submitBtn: {
+    marginTop: "8px",
     padding: "15px",
     background: "linear-gradient(135deg, #667eea, #764ba2)",
     color: "white",
     border: "none",
     borderRadius: "12px",
+    fontSize: "16px",
     fontWeight: "700",
     cursor: "pointer",
+    transition: "all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)",
+    boxShadow: "0 10px 30px rgba(102,126,234,0.3)",
+    letterSpacing: "0.3px",
   },
   footerText: {
     textAlign: "center",
-    marginTop: "20px",
+    fontSize: "14px",
     color: "var(--text-secondary)",
+    margin: "28px 0 0",
   },
   link: {
     color: "#667eea",
+    fontWeight: "600",
     cursor: "pointer",
+    textDecoration: "underline",
   },
 };
 

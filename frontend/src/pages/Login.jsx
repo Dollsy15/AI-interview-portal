@@ -149,6 +149,22 @@ const Login = () => {
       </div>
 
       <style>{`
+        :root {
+          --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          --bg-card: #ffffff;
+          --text-primary: #000000;
+          --text-secondary: #666666;
+          --border-color: #e5e7eb;
+        }
+
+        :root[data-theme="dark"] {
+          --bg-gradient: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+          --bg-card: #1f2937;
+          --text-primary: #000000;
+          --text-secondary: #9ca3af;
+          --border-color: #374151;
+        }
+
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap');
         @keyframes fadeUp {
           from { opacity: 0; transform: translateY(30px); }
@@ -277,7 +293,7 @@ const s = {
     outline: "none",
     background: "transparent",
     fontSize: "15px",
-    color: "var(--text-primary)",
+    color: "#000000",
     padding: "13px 0",
     fontFamily: "'Inter', sans-serif",
   },
