@@ -179,7 +179,7 @@ const Signup = () => {
 const s = {
   container: {
     minHeight: "100vh",
-    background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+    background: "var(--bg-gradient)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -209,7 +209,7 @@ const s = {
     left: "-100px",
   },
   card: {
-    background: "rgba(255,255,255,0.97)",
+    background: "var(--bg-card)",
     borderRadius: "24px",
     padding: "48px 40px",
     width: "100%",
@@ -233,10 +233,11 @@ const s = {
   title: {
     fontSize: "28px",
     fontWeight: "800",
+    color: "var(--text-primary)",
   },
   subtitle: {
     fontSize: "14px",
-    color: "#888",
+    color: "var(--text-secondary)",
   },
   form: {
     display: "flex",
@@ -251,13 +252,14 @@ const s = {
   label: {
     fontSize: "13px",
     fontWeight: "600",
+    color: "var(--text-secondary)",
   },
   inputWrap: {
     display: "flex",
     alignItems: "center",
-    border: "1.5px solid #e5e7eb",
+    border: "1.5px solid var(--border-color)",
     borderRadius: "10px",
-    background: "#fafafa",
+    background: "transparent",
   },
   inputIcon: {
     padding: "0 12px",
@@ -268,6 +270,7 @@ const s = {
     outline: "none",
     background: "transparent",
     padding: "12px 0",
+    color: "var(--text-primary)",
   },
   eyeToggle: {
     padding: "0 14px",
@@ -285,6 +288,7 @@ const s = {
   footerText: {
     textAlign: "center",
     marginTop: "20px",
+    color: "var(--text-secondary)",
   },
   link: {
     color: "#667eea",

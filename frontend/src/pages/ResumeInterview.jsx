@@ -197,14 +197,24 @@ const ResumeInterview = () => {
   // ── Interview Screen ──
   return (
     <div style={s.page}>
+      <style>{`
+        @media (max-width: 768px) {
+          .ri-container { padding: 20px 10px !important; }
+          .ri-card { padding: 20px !important; }
+          .ri-header { flex-direction: column; align-items: flex-start !important; }
+          .ri-btn-row { flex-direction: column; }
+          .ri-title { font-size: 24px !important; }
+        }
+      `}</style>
       <div
+        className="ri-container"
         style={{ maxWidth: "800px", margin: "0 auto", padding: "40px 20px" }}
       >
         {/* Header */}
-        <div style={s.header}>
+        <div className="ri-header" style={s.header}>
           <div>
             <p style={s.headerLabel}>AI Interview Portal</p>
-            <h1 style={s.headerTitle}>
+            <h1 className="ri-title" style={s.headerTitle}>
               {data.name
                 ? `Hey, ${data.name.split(" ")[0]}!`
                 : "Interview Session"}
@@ -256,7 +266,7 @@ const ResumeInterview = () => {
         </div>
 
         {/* Question Card */}
-        <div style={s.card} key={currentIdx}>
+        <div className="ri-card" style={s.card} key={currentIdx}>
           {/* Meta tags */}
           <div
             style={{
@@ -304,7 +314,7 @@ const ResumeInterview = () => {
           />
 
           {/* Buttons */}
-          <div style={s.btnRow}>
+          <div className="ri-btn-row" style={s.btnRow}>
             <button
               style={{
                 ...s.primaryBtn,
@@ -382,8 +392,9 @@ const Stars = ({ score }) => {
 const s = {
   page: {
     minHeight: "100vh",
-    background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-    fontFamily: "sans-serif",
+    background: "var(--bg-gradient)",
+    fontFamily: "'Inter', sans-serif",
+    color: "var(--text-primary)",
   },
   // Header
   header: {
@@ -450,11 +461,12 @@ const s = {
   },
   // Card
   card: {
-    background: "white",
+    background: "var(--bg-card)",
     borderRadius: "20px",
     padding: "32px",
     marginBottom: "20px",
     boxShadow: "0 20px 60px rgba(0,0,0,0.15)",
+    border: "1px solid var(--border-color)",
   },
   qNum: {
     fontSize: "12px",
@@ -463,9 +475,9 @@ const s = {
     letterSpacing: "2px",
   },
   topicTag: {
-    background: "#eff6ff",
-    border: "1px solid #bfdbfe",
-    color: "#1d4ed8",
+    background: "rgba(102, 126, 234, 0.1)",
+    border: "1px solid var(--border-color)",
+    color: "var(--text-primary)",
     padding: "3px 10px",
     borderRadius: "6px",
     fontSize: "12px",
@@ -495,17 +507,18 @@ const s = {
   questionText: {
     fontSize: "18px",
     fontWeight: "700",
-    color: "#1a1a2e",
+    color: "var(--text-primary)",
     lineHeight: "1.5",
     marginBottom: "20px",
   },
   textarea: {
     width: "100%",
-    border: "2px solid #e5e7eb",
+    border: "2px solid var(--border-color)",
     borderRadius: "10px",
     padding: "14px",
     fontSize: "15px",
-    color: "#374151",
+    color: "var(--text-primary)",
+    background: "transparent",
     fontFamily: "sans-serif",
     resize: "vertical",
     outline: "none",
@@ -530,9 +543,9 @@ const s = {
   },
   skipBtn: {
     padding: "14px 20px",
-    background: "#f3f4f6",
-    color: "#6b7280",
-    border: "1px solid #e5e7eb",
+    background: "transparent",
+    color: "var(--text-secondary)",
+    border: "1px solid var(--border-color)",
     borderRadius: "10px",
     fontSize: "14px",
     cursor: "pointer",
@@ -567,12 +580,13 @@ const s = {
   },
   // Feedback
   feedbackBox: {
-    background: "white",
+    background: "var(--bg-card)",
     borderRadius: "16px",
     padding: "24px",
     marginBottom: "20px",
     boxShadow: "0 10px 40px rgba(0,0,0,0.1)",
     borderLeft: "5px solid #667eea",
+    border: "1px solid var(--border-color)",
   },
   feedbackHeader: {
     display: "flex",
@@ -596,7 +610,7 @@ const s = {
     color: "#667eea",
   },
   feedbackText: {
-    color: "#374151",
+    color: "var(--text-primary)",
     fontSize: "14px",
     lineHeight: "1.7",
   },
@@ -606,7 +620,7 @@ const s = {
     gap: "8px",
     marginTop: "12px",
     paddingTop: "12px",
-    borderTop: "1px solid #f3f4f6",
+    borderTop: "1px solid var(--border-color)",
   },
   // Result screen
   resultTitle: {
@@ -621,12 +635,13 @@ const s = {
     margin: 0,
   },
   scoreBox: {
-    background: "white",
+    background: "var(--bg-card)",
     borderRadius: "20px",
     padding: "32px",
     textAlign: "center",
     marginBottom: "24px",
     boxShadow: "0 20px 60px rgba(0,0,0,0.15)",
+    border: "1px solid var(--border-color)",
   },
   scoreLabel: {
     color: "#999",
@@ -647,11 +662,12 @@ const s = {
     margin: 0,
   },
   qaCard: {
-    background: "white",
+    background: "var(--bg-card)",
     borderRadius: "16px",
     padding: "24px",
     marginBottom: "16px",
     boxShadow: "0 10px 40px rgba(0,0,0,0.08)",
+    border: "1px solid var(--border-color)",
     borderLeft: "5px solid #667eea",
   },
   qaQuestion: {
@@ -668,11 +684,11 @@ const s = {
     lineHeight: "1.6",
   },
   qaFeedback: {
-    color: "#374151",
+    color: "var(--text-primary)",
     fontSize: "13px",
     lineHeight: "1.6",
     paddingTop: "10px",
-    borderTop: "1px solid #f3f4f6",
+    borderTop: "1px solid var(--border-color)",
   },
   outlineBtn: {
     padding: "14px 24px",
@@ -689,14 +705,15 @@ const s = {
     maxWidth: "500px",
     margin: "80px auto",
     textAlign: "center",
-    background: "white",
+    background: "var(--bg-card)",
     borderRadius: "20px",
     padding: "48px 32px",
     boxShadow: "0 20px 60px rgba(0,0,0,0.15)",
+    border: "1px solid var(--border-color)",
   },
   emptyIcon: { fontSize: "56px", marginBottom: "16px" },
   emptyTitle: {
-    color: "#1a1a2e",
+    color: "var(--text-primary)",
     fontSize: "22px",
     fontWeight: "700",
     margin: "0 0 8px",

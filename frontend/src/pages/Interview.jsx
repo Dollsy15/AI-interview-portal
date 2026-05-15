@@ -113,12 +113,21 @@ const Interview = () => {
     <div
       style={{
         minHeight: "100vh",
-        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+        background: "var(--bg-gradient)",
         padding: "40px 20px",
         fontFamily: "sans-serif",
       }}
     >
-      <div style={{ maxWidth: "720px", margin: "0 auto" }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .interview-container { padding: 10px !important; }
+          .main-card { padding: 24px !important; }
+          .question-text { font-size: 16px !important; }
+          textarea { height: 140px !important; }
+          .btn-row { flex-direction: column-reverse; }
+        }
+      `}</style>
+      <div className="interview-container" style={{ maxWidth: "720px", margin: "0 auto" }}>
         {/* Header */}
         <div style={{ textAlign: "center", marginBottom: "32px" }}>
           <h1
@@ -208,8 +217,9 @@ const Interview = () => {
 
         {/* Main Card */}
         <div
+          className="main-card"
           style={{
-            background: "white",
+            background: "var(--bg-card)",
             borderRadius: "20px",
             padding: "40px",
             boxShadow: "0 20px 60px rgba(0,0,0,0.15)",
@@ -242,10 +252,11 @@ const Interview = () => {
               {currentIndex + 1}
             </div>
             <p
+              className="question-text"
               style={{
                 fontSize: "18px",
                 fontWeight: "600",
-                color: "#1f2937",
+                color: "var(--text-primary)",
                 margin: 0,
                 lineHeight: "1.5",
               }}
@@ -263,21 +274,23 @@ const Interview = () => {
               height: "160px",
               padding: "16px",
               borderRadius: "12px",
-              border: "2px solid #e5e7eb",
+              border: "2px solid var(--border-color)",
               fontSize: "15px",
               fontFamily: "sans-serif",
               resize: "vertical",
               outline: "none",
-              color: "#374151",
+              color: "var(--text-primary)",
               lineHeight: "1.6",
               boxSizing: "border-box",
               transition: "border 0.2s",
+              background: "transparent",
             }}
             onFocus={(e) => (e.target.style.border = "2px solid #667eea")}
-            onBlur={(e) => (e.target.style.border = "2px solid #e5e7eb")}
+            onBlur={(e) => (e.target.style.border = "2px solid var(--border-color)")}
           />
 
           <div
+            className="btn-row"
             style={{
               display: "flex",
               justifyContent: "space-between",
@@ -292,9 +305,9 @@ const Interview = () => {
                 flex: 1,
                 padding: "12px",
                 borderRadius: "10px",
-                border: "2px solid #e5e7eb",
-                background: "white",
-                color: currentIndex === 0 ? "#ccc" : "#374151",
+                border: "2px solid var(--border-color)",
+                background: "transparent",
+                color: currentIndex === 0 ? "#ccc" : "var(--text-primary)",
                 fontSize: "15px",
                 fontWeight: "600",
                 cursor: currentIndex === 0 ? "not-allowed" : "pointer",

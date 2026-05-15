@@ -23,6 +23,18 @@ const Dashboard = () => {
   const [history, setHistory] = useState([]);
   const [activeTab, setActiveTab] = useState("overview");
   const [hoveredCard, setHoveredCard] = useState(null);
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    document.documentElement.setAttribute("data-theme", newTheme);
+    localStorage.setItem("theme", newTheme);
+  };
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+  }, [theme]);
 
   useEffect(() => {
     const fetchDashboard = async () => {
@@ -191,10 +203,24 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <button onClick={handleLogout} style={s.logoutBtn}>
-            <span style={{ fontSize: "18px" }}>↗</span>
-            <span>Logout</span>
-          </button>
+          <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
+            <button
+              onClick={toggleTheme}
+              style={{
+                background: "transparent",
+                border: "none",
+                fontSize: "20px",
+                cursor: "pointer",
+                padding: "8px",
+              }}
+            >
+              {theme === "light" ? "🌙" : "☀️"}
+            </button>
+            <button onClick={handleLogout} style={s.logoutBtn}>
+              <span style={{ fontSize: "18px" }}>↗</span>
+              <span>Logout</span>
+            </button>
+          </div>
         </div>
       </header>
 
@@ -582,6 +608,34 @@ const Dashboard = () => {
           0%, 100% { opacity: 0.6; }
           50% { opacity: 1; }
         }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+          .header-content {
+            flex-direction: column !important;
+            gap: 16px !important;
+          }
+          .hero-content {
+            grid-template-columns: 1fr !important;
+            text-align: center;
+          }
+          .stats-container {
+            grid-template-columns: 1fr !important;
+          }
+          .tabs-container {
+            overflow-x: auto;
+            white-space: nowrap;
+          }
+          .history-header {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 12px !important;
+          }
+          .history-right {
+            width: 100%;
+            justify-content: space-between;
+          }
+        }
       `}</style>
     </div>
   );
@@ -591,9 +645,9 @@ const Dashboard = () => {
 const s = {
   mainContainer: {
     minHeight: "100vh",
-    background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+    background: "var(--bg-gradient)",
     fontFamily: "sans-serif",
-    color: "#1a1a2e",
+    color: "var(--text-primary)",
     overflow: "hidden",
     position: "relative",
   },
@@ -604,7 +658,7 @@ const s = {
     left: 0,
     width: "100%",
     height: "100%",
-    background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+    background: "var(--bg-gradient)",
     zIndex: -3,
   },
 
@@ -1014,7 +1068,7 @@ const s = {
   tabTitle: {
     fontSize: "24px",
     fontWeight: "700",
-    color: "#1a1a2e",
+    color: "var(--text-primary)",
     margin: "0 0 8px",
   },
 
@@ -1063,8 +1117,8 @@ const s = {
   },
 
   questionCard: {
-    background: "#f9fafb",
-    border: "1px solid #e5e7eb",
+    background: "var(--bg-card)",
+    border: "1px solid var(--border-color)",
     borderRadius: "16px",
     padding: "24px",
     position: "relative",
@@ -1091,7 +1145,7 @@ const s = {
   questionText: {
     fontSize: "15px",
     fontWeight: "600",
-    color: "#1a1a2e",
+    color: "var(--text-primary)",
     marginBottom: "16px",
     marginTop: "12px",
     lineHeight: "1.5",
@@ -1105,7 +1159,7 @@ const s = {
     borderRadius: "10px",
     fontSize: "14px",
     fontFamily: "sans-serif",
-    color: "#374151",
+    color: "var(--text-primary)",
     resize: "vertical",
     transition: "all 0.3s ease",
   },
@@ -1135,8 +1189,8 @@ const s = {
   },
 
   historyCard: {
-    background: "#f9fafb",
-    border: "1px solid #e5e7eb",
+    background: "var(--bg-card)",
+    border: "1px solid var(--border-color)",
     borderRadius: "14px",
     padding: "24px",
     transition: "all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",

@@ -44,23 +44,25 @@ const Mcqs = () => {
       <div
         style={{
           minHeight: "100vh",
-          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+          background: "var(--bg-gradient)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           padding: "20px",
-          fontFamily: "sans-serif",
+          fontFamily: "'Inter', sans-serif",
         }}
       >
         <div
           style={{
-            background: "white",
+            background: "var(--bg-card)",
             borderRadius: "24px",
             padding: "48px",
             textAlign: "center",
             maxWidth: "480px",
             width: "100%",
             boxShadow: "0 20px 60px rgba(0,0,0,0.15)",
+            color: "var(--text-primary)",
+            border: "1px solid var(--border-color)",
           }}
         >
           <div style={{ fontSize: "64px", marginBottom: "16px" }}>
@@ -171,12 +173,21 @@ const Mcqs = () => {
     <div
       style={{
         minHeight: "100vh",
-        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+        background: "var(--bg-gradient)",
         padding: "40px 20px",
-        fontFamily: "sans-serif",
+        fontFamily: "'Inter', sans-serif",
+        color: "var(--text-primary)",
       }}
     >
-      <div style={{ maxWidth: "640px", margin: "0 auto" }}>
+      <style>{`
+        @media (max-width: 768px) {
+          h1 { font-size: 24px !important; }
+          .mcq-container { padding: 20px 10px !important; }
+          .main-card { padding: 20px !important; }
+          .btn-row { flex-direction: column; }
+        }
+      `}</style>
+      <div className="mcq-container" style={{ maxWidth: "640px", margin: "0 auto" }}>
         {/* Header */}
         <div style={{ textAlign: "center", marginBottom: "32px" }}>
           <h1
@@ -261,12 +272,14 @@ const Mcqs = () => {
 
         {/* Question Card */}
         <div
+          className="main-card"
           style={{
-            background: "white",
+            background: "var(--bg-card)",
             borderRadius: "20px",
             padding: "40px",
             boxShadow: "0 20px 60px rgba(0,0,0,0.15)",
             marginBottom: "20px",
+            border: "1px solid var(--border-color)",
           }}
         >
           <div
@@ -298,7 +311,7 @@ const Mcqs = () => {
               style={{
                 fontSize: "18px",
                 fontWeight: "600",
-                color: "#1f2937",
+                color: "var(--text-primary)",
                 margin: 0,
                 lineHeight: "1.5",
               }}
@@ -322,8 +335,8 @@ const Mcqs = () => {
                   style={{
                     padding: "14px 18px",
                     borderRadius: "12px",
-                    border: `2px solid ${selected ? "#667eea" : "#e5e7eb"}`,
-                    background: selected ? "#f0f0ff" : "white",
+                    border: `2px solid ${selected ? "#667eea" : "var(--border-color)"}`,
+                    background: selected ? "rgba(102, 126, 234, 0.1)" : "transparent",
                     cursor: "pointer",
                     display: "flex",
                     alignItems: "center",
@@ -358,7 +371,7 @@ const Mcqs = () => {
                   <span
                     style={{
                       fontSize: "15px",
-                      color: selected ? "#667eea" : "#374151",
+                      color: selected ? "#667eea" : "var(--text-primary)",
                       fontWeight: selected ? "600" : "400",
                     }}
                   >
@@ -370,7 +383,7 @@ const Mcqs = () => {
           </div>
 
           {/* Buttons */}
-          <div style={{ display: "flex", gap: "12px", marginTop: "28px" }}>
+          <div className="btn-row" style={{ display: "flex", gap: "12px", marginTop: "28px" }}>
             <button
               onClick={() => setCurrentIndex((p) => p - 1)}
               disabled={currentIndex === 0}
@@ -378,9 +391,9 @@ const Mcqs = () => {
                 flex: 1,
                 padding: "12px",
                 borderRadius: "10px",
-                border: "2px solid #e5e7eb",
-                background: "white",
-                color: currentIndex === 0 ? "#ccc" : "#374151",
+                border: "2px solid var(--border-color)",
+                background: "transparent",
+                color: currentIndex === 0 ? "#ccc" : "var(--text-primary)",
                 fontSize: "15px",
                 fontWeight: "600",
                 cursor: currentIndex === 0 ? "not-allowed" : "pointer",

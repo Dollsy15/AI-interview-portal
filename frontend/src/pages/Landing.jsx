@@ -5,6 +5,18 @@ import SignupModal from "../components/SignupModal";
 const Landing = () => {
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    document.documentElement.setAttribute("data-theme", newTheme);
+    localStorage.setItem("theme", newTheme);
+  };
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+  }, []);
   const [typedText, setTypedText] = useState("");
   const fullText = " Intelligent Coaching";
 
@@ -36,6 +48,9 @@ const Landing = () => {
             <span style={s.navTitle}>Interview Portal</span>
           </div>
           <div style={s.navButtons}>
+            <button onClick={toggleTheme} style={s.themeToggleBtn}>
+              {theme === "light" ? "🌙" : "☀️"}
+            </button>
             <button
               style={s.navLoginBtn}
               onClick={() => {
@@ -54,8 +69,8 @@ const Landing = () => {
             <button
               style={s.navSignupBtn}
               onClick={() => {
-                setShowSignup(false);
-                setShowLogin(true);
+                setShowLogin(false);
+                setShowSignup(true);
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = "scale(1.05)";
@@ -321,6 +336,33 @@ const Landing = () => {
           0%, 100% { opacity: 1; }
           50% { opacity: 0; }
         }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+          .hero-section {
+            grid-template-columns: 1fr !important;
+            padding: 40px 20px !important;
+            gap: 40px !important;
+            text-align: center;
+          }
+          .hero-title {
+            fontSize: 36px !important;
+          }
+          .stats-row {
+            grid-template-columns: 1fr !important;
+            gap: 16px !important;
+          }
+          .nav-content {
+            padding: 0 20px !important;
+          }
+          .cta-container {
+            flex-direction: column;
+            align-items: center;
+          }
+          .features-grid {
+            grid-template-columns: 1fr !important;
+          }
+        }
       `}</style>
     </div>
   );
@@ -329,11 +371,18 @@ const Landing = () => {
 const s = {
   container: {
     minHeight: "100vh",
-    background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+    background: "var(--bg-gradient)",
     fontFamily: "'Inter', sans-serif",
-    color: "#1a1a2e",
+    color: "var(--text-primary)",
     overflow: "hidden",
     position: "relative",
+  },
+  themeToggleBtn: {
+    background: "transparent",
+    border: "none",
+    fontSize: "20px",
+    cursor: "pointer",
+    padding: "8px",
   },
   bgGradient: {
     position: "fixed",
@@ -341,7 +390,7 @@ const s = {
     left: 0,
     width: "100%",
     height: "100%",
-    background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+    background: "var(--bg-gradient)",
     zIndex: -3,
   },
   floatingOrb1: {
@@ -537,7 +586,7 @@ const s = {
     animation: "slideInUp 0.8s ease-out 0.2s both",
   },
   heroCard: {
-    background: "rgba(255,255,255,0.95)",
+    background: "var(--bg-card)",
     borderRadius: "20px",
     padding: "32px",
     boxShadow: "0 40px 80px rgba(0,0,0,0.2)",
@@ -561,7 +610,7 @@ const s = {
     alignItems: "center",
     marginBottom: "20px",
     paddingBottom: "16px",
-    borderBottom: "1px solid #e5e7eb",
+    borderBottom: "1px solid var(--border-color)",
   },
   cardTitle: {
     fontSize: "14px",
@@ -580,12 +629,13 @@ const s = {
   cardQuestion: {
     fontSize: "15px",
     fontWeight: "600",
-    color: "#1a1a2e",
+    color: "var(--text-primary)",
     marginBottom: "20px",
     lineHeight: "1.6",
   },
   cardResponse: {
-    background: "#f9fafb",
+    background: "var(--bg-card)",
+    border: "1px solid var(--border-color)",
     borderRadius: "12px",
     padding: "16px",
     marginBottom: "20px",
@@ -598,12 +648,13 @@ const s = {
   },
   feedback: {
     fontSize: "14px",
-    color: "#374151",
+    color: "var(--text-primary)",
     lineHeight: "1.6",
     margin: 0,
   },
   cardScore: {
-    background: "#f9fafb",
+    background: "var(--bg-card)",
+    border: "1px solid var(--border-color)",
     borderRadius: "12px",
     padding: "16px",
     marginBottom: "20px",
@@ -617,7 +668,7 @@ const s = {
   },
   scoreBar: {
     height: "8px",
-    background: "#e5e7eb",
+    background: "var(--border-color)",
     borderRadius: "4px",
     overflow: "hidden",
     marginBottom: "12px",
@@ -648,11 +699,10 @@ const s = {
     flexDirection: "column",
     alignItems: "center",
     gap: "6px",
-    background: "linear-gradient(135deg, #f0f4ff, #f9fafb)",
-    border: "1px solid #e5e7eb",
+    background: "var(--bg-card)",
+    border: "1px solid var(--border-color)",
+    padding: "12px",
     borderRadius: "12px",
-    padding: "14px 10px",
-    textAlign: "center",
   },
   badgeIcon: { fontSize: "22px" },
   badgeLabel: {
@@ -688,7 +738,7 @@ const s = {
     gap: "32px",
   },
   featureCard: {
-    background: "rgba(255,255,255,0.95)",
+    background: "var(--bg-card)",
     borderRadius: "16px",
     padding: "32px",
     textAlign: "center",
@@ -699,12 +749,12 @@ const s = {
   featureCardTitle: {
     fontSize: "18px",
     fontWeight: "700",
-    color: "#1a1a2e",
+    color: "var(--text-primary)",
     margin: "0 0 12px",
   },
   featureCardDesc: {
     fontSize: "14px",
-    color: "#666",
+    color: "var(--text-secondary)",
     margin: 0,
     lineHeight: "1.6",
   },

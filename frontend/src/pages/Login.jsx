@@ -167,7 +167,7 @@ const Login = () => {
 const s = {
   container: {
     minHeight: "100vh",
-    background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+    background: "var(--bg-gradient)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -201,7 +201,7 @@ const s = {
     pointerEvents: "none",
   },
   card: {
-    background: "rgba(255,255,255,0.97)",
+    background: "var(--bg-card)",
     borderRadius: "24px",
     padding: "48px 40px",
     width: "100%",
@@ -232,13 +232,13 @@ const s = {
   title: {
     fontSize: "28px",
     fontWeight: "800",
-    color: "#1a1a2e",
+    color: "var(--text-primary)",
     margin: "0 0 8px",
     fontFamily: "'Space Grotesk', sans-serif",
   },
   subtitle: {
     fontSize: "14px",
-    color: "#888",
+    color: "var(--text-secondary)",
     margin: 0,
   },
   form: {
@@ -254,15 +254,15 @@ const s = {
   label: {
     fontSize: "13px",
     fontWeight: "600",
-    color: "#374151",
+    color: "var(--text-secondary)",
     letterSpacing: "0.3px",
   },
   inputWrap: {
     display: "flex",
     alignItems: "center",
-    border: "1.5px solid #e5e7eb",
+    border: "1.5px solid var(--border-color)",
     borderRadius: "10px",
-    background: "#fafafa",
+    background: "transparent",
     transition: "all 0.2s ease",
     overflow: "hidden",
   },
@@ -277,7 +277,7 @@ const s = {
     outline: "none",
     background: "transparent",
     fontSize: "15px",
-    color: "#1a1a2e",
+    color: "var(--text-primary)",
     padding: "13px 0",
     fontFamily: "'Inter', sans-serif",
   },
@@ -305,7 +305,7 @@ const s = {
   footerText: {
     textAlign: "center",
     fontSize: "14px",
-    color: "#888",
+    color: "var(--text-secondary)",
     margin: "28px 0 0",
   },
   link: {

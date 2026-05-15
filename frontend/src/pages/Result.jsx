@@ -28,8 +28,26 @@ const Result = () => {
   }, [score]);
 
   return (
-    <div style={{ padding: "40px", textAlign: "center" }}>
-      <h1>🎯 Interview Result</h1>
+    <div
+      style={{
+        minHeight: "100vh",
+        background: "var(--bg-gradient)",
+        padding: "60px 20px",
+        textAlign: "center",
+        color: "var(--text-primary)",
+        fontFamily: "'Inter', sans-serif",
+      }}
+    >
+      <style>{`
+        @media (max-width: 768px) {
+          h1 { font-size: 24px !important; }
+          .result-container { padding: 20px 10px !important; }
+          .feedback-box, .qa-box, .response-box { padding: 20px !important; }
+          .btn-group { flex-direction: column; gap: 12px; }
+          .btn-group button { width: 100%; margin-right: 0 !important; }
+        }
+      `}</style>
+      <h1 style={{ fontSize: "36px", fontWeight: "800", marginBottom: "40px" }}>🎯 Interview Result</h1>
 
       {/* SCORE */}
       <div
@@ -45,49 +63,51 @@ const Result = () => {
 
       {/* OVERALL FEEDBACK */}
       <div
+        className="feedback-box"
         style={{
           marginTop: "30px",
-          padding: "20px",
-          border: "1px solid #ccc",
-          borderRadius: "10px",
+          padding: "32px",
+          border: "1px solid var(--border-color)",
+          borderRadius: "20px",
           textAlign: "left",
           whiteSpace: "pre-wrap",
-          background: "#f9f9f9",
-          maxWidth: "700px",
+          background: "var(--bg-card)",
+          maxWidth: "800px",
           marginLeft: "auto",
           marginRight: "auto",
+          boxShadow: "0 20px 60px rgba(0,0,0,0.15)",
         }}
       >
-        <h3>📊 AI Feedback</h3>
-        <p>{feedback}</p>
+        <h3 style={{ marginBottom: "16px" }}>📊 AI Feedback</h3>
+        <p style={{ lineHeight: "1.6" }}>{feedback}</p>
       </div>
 
       {/* 🧠 QUESTION-WISE FEEDBACK (ADDED) */}
       {feedbackArray.length > 0 && (
         <div
           style={{
-            marginTop: "30px",
-            maxWidth: "700px",
+            marginTop: "40px",
+            maxWidth: "800px",
             marginLeft: "auto",
             marginRight: "auto",
             textAlign: "left",
           }}
         >
-          <h3>🧠 Question-wise Feedback</h3>
-
+          <h3 style={{ marginBottom: "20px" }}>🧠 Question-wise Feedback</h3>
           {feedbackArray.map((f, i) => (
             <div
               key={i}
               style={{
-                marginBottom: "15px",
-                padding: "12px",
-                border: "1px solid #ddd",
-                borderRadius: "6px",
-                background: "#fff",
+                marginBottom: "16px",
+                padding: "20px",
+                border: "1px solid var(--border-color)",
+                borderRadius: "12px",
+                background: "var(--bg-card)",
+                boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
               }}
             >
-              <p><b>Q:</b> {f.question}</p>
-              <p><b>Feedback:</b> {f.remark}</p>
+              <p style={{ marginBottom: "8px" }}><b>Q:</b> {f.question}</p>
+              <p style={{ margin: 0 }}><b>Feedback:</b> {f.remark}</p>
             </div>
           ))}
         </div>
@@ -97,14 +117,13 @@ const Result = () => {
       <div
         style={{
           marginTop: "40px",
-          maxWidth: "700px",
+          maxWidth: "800px",
           marginLeft: "auto",
           marginRight: "auto",
           textAlign: "left",
         }}
       >
-        <h3>📝 Your Responses</h3>
-
+        <h3 style={{ marginBottom: "20px" }}>📝 Your Responses</h3>
         {questions.length === 0 ? (
           <p>No questions available</p>
         ) : (
@@ -112,18 +131,18 @@ const Result = () => {
             <div
               key={index}
               style={{
-                marginBottom: "20px",
-                padding: "15px",
-                border: "1px solid #ddd",
-                borderRadius: "8px",
-                background: "#fff",
+                marginBottom: "16px",
+                padding: "20px",
+                border: "1px solid var(--border-color)",
+                borderRadius: "12px",
+                background: "var(--bg-card)",
+                boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
               }}
             >
-              <strong>
+              <strong style={{ display: "block", marginBottom: "12px" }}>
                 Q{index + 1}: {q}
               </strong>
-
-              <p style={{ marginTop: "10px" }}>
+              <p style={{ margin: 0, lineHeight: "1.6" }}>
                 <b>Your Answer:</b>{" "}
                 {answers[index] ? answers[index] : "No answer provided"}
               </p>
@@ -133,31 +152,35 @@ const Result = () => {
       </div>
 
       {/* BUTTONS */}
-      <div style={{ marginTop: "30px" }}>
+      <div className="btn-group" style={{ marginTop: "40px", paddingBottom: "60px" }}>
         <button
           onClick={() => navigate("/dashboard")}
           style={{
-            marginRight: "10px",
-            padding: "10px 20px",
-            background: "#333",
-            color: "white",
-            border: "none",
-            borderRadius: "5px",
+            marginRight: "16px",
+            padding: "14px 28px",
+            background: "var(--bg-card)",
+            color: "var(--text-primary)",
+            border: "1px solid var(--border-color)",
+            borderRadius: "12px",
             cursor: "pointer",
+            fontWeight: "600",
+            transition: "all 0.3s ease",
           }}
         >
           🏠 Dashboard
         </button>
-
         <button
           onClick={() => navigate("/interview")}
           style={{
-            padding: "10px 20px",
-            background: "#4a6cf7",
+            padding: "14px 28px",
+            background: "linear-gradient(135deg, #667eea, #764ba2)",
             color: "white",
             border: "none",
-            borderRadius: "5px",
+            borderRadius: "12px",
             cursor: "pointer",
+            fontWeight: "700",
+            boxShadow: "0 10px 30px rgba(102, 126, 234, 0.4)",
+            transition: "all 0.3s ease",
           }}
         >
           🔁 Retake Interview

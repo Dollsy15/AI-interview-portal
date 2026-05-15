@@ -58,23 +58,25 @@ const Coding = () => {
       <div
         style={{
           minHeight: "100vh",
-          background: "linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%)",
+          background: "var(--bg-gradient)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           padding: "20px",
-          fontFamily: "sans-serif",
+          fontFamily: "'Inter', sans-serif",
         }}
       >
         <div
           style={{
-            background: "white",
+            background: "var(--bg-card)",
             borderRadius: "24px",
             padding: "48px",
             textAlign: "center",
             maxWidth: "520px",
             width: "100%",
             boxShadow: "0 20px 60px rgba(0,0,0,0.3)",
+            color: "var(--text-primary)",
+            border: "1px solid var(--border-color)",
           }}
         >
           <div style={{ fontSize: "64px", marginBottom: "16px" }}>🎉</div>
@@ -164,12 +166,22 @@ const Coding = () => {
     <div
       style={{
         minHeight: "100vh",
-        background: "linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%)",
+        background: "var(--bg-gradient)",
         padding: "40px 20px",
-        fontFamily: "sans-serif",
+        fontFamily: "'Inter', sans-serif",
+        color: "var(--text-primary)",
       }}
     >
-      <div style={{ maxWidth: "760px", margin: "0 auto" }}>
+      <style>{`
+        @media (max-width: 768px) {
+          h1 { font-size: 24px !important; }
+          .coding-container { padding: 20px 10px !important; }
+          .main-card { padding: 16px !important; }
+          .editor-textarea { height: 180px !important; }
+          .btn-row { flex-direction: column; }
+        }
+      `}</style>
+      <div className="coding-container" style={{ maxWidth: "760px", margin: "0 auto" }}>
         {/* Header */}
         <div style={{ textAlign: "center", marginBottom: "32px" }}>
           <h1
@@ -254,20 +266,21 @@ const Coding = () => {
 
         {/* Main Card */}
         <div
+          className="main-card"
           style={{
-            background: "#1e293b",
+            background: "var(--bg-card)",
             borderRadius: "20px",
             overflow: "hidden",
             boxShadow: "0 20px 60px rgba(0,0,0,0.4)",
             marginBottom: "20px",
-            border: "1px solid rgba(255,255,255,0.08)",
+            border: "1px solid var(--border-color)",
           }}
         >
           {/* Card Header */}
           <div
             style={{
               padding: "24px 28px",
-              borderBottom: "1px solid rgba(255,255,255,0.08)",
+              borderBottom: "1px solid var(--border-color)",
             }}
           >
             <div
@@ -297,7 +310,7 @@ const Coding = () => {
               </div>
               <h2
                 style={{
-                  color: "white",
+                  color: "var(--text-primary)",
                   fontSize: "20px",
                   fontWeight: "700",
                   margin: 0,
@@ -321,7 +334,7 @@ const Coding = () => {
             </div>
             <p
               style={{
-                color: "rgba(255,255,255,0.7)",
+                color: "var(--text-secondary)",
                 margin: "0 0 8px",
                 fontSize: "15px",
               }}
@@ -391,6 +404,7 @@ const Coding = () => {
             </div>
 
             <textarea
+              className="editor-textarea"
               placeholder={`// Write your solution here...\nfunction solution() {\n  \n}`}
               value={answers[currentIndex] || ""}
               onChange={(e) =>
@@ -449,10 +463,11 @@ const Coding = () => {
           )}
 
           <div
+            className="btn-row"
             style={{
               padding: "16px 24px",
-              background: "#1e293b",
-              borderTop: "1px solid rgba(255,255,255,0.08)",
+              background: "transparent",
+              borderTop: "1px solid var(--border-color)",
               display: "flex",
               gap: "12px",
             }}
@@ -466,7 +481,7 @@ const Coding = () => {
                 borderRadius: "10px",
                 border: "1px solid rgba(255,255,255,0.15)",
                 background: "transparent",
-                color: currentIndex === 0 ? "rgba(255,255,255,0.2)" : "white",
+                color: currentIndex === 0 ? "rgba(255,255,255,0.2)" : "var(--text-primary)",
                 fontSize: "15px",
                 fontWeight: "600",
                 cursor: currentIndex === 0 ? "not-allowed" : "pointer",

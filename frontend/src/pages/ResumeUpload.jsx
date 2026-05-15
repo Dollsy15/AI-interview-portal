@@ -66,15 +66,24 @@ const ResumeUpload = () => {
     <div
       style={{
         minHeight: "100vh",
-        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+        background: "var(--bg-gradient)",
         padding: "40px 20px",
         fontFamily: "sans-serif",
       }}
     >
-      <div style={{ maxWidth: "800px", margin: "0 auto" }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .ru-container { padding: 20px 10px !important; }
+          .ru-card { padding: 24px !important; }
+          .ru-title { font-size: 24px !important; }
+          .ru-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
+      <div className="ru-container" style={{ maxWidth: "800px", margin: "0 auto" }}>
         {/* Header */}
         <div style={{ textAlign: "center", marginBottom: "40px" }}>
           <h1
+            className="ru-title"
             style={{
               color: "white",
               fontSize: "36px",
@@ -97,8 +106,9 @@ const ResumeUpload = () => {
 
         {/* Upload Card */}
         <div
+          className="ru-card"
           style={{
-            background: "white",
+            background: "var(--bg-card)",
             borderRadius: "20px",
             padding: "40px",
             marginBottom: "24px",
@@ -111,7 +121,7 @@ const ResumeUpload = () => {
               borderRadius: "12px",
               padding: "40px",
               textAlign: "center",
-              background: "#f8f7ff",
+              background: "transparent",
               marginBottom: "24px",
             }}
           >
@@ -282,6 +292,7 @@ const ResumeUpload = () => {
 
             {/* 3 Cards */}
             <div
+              className="ru-grid"
               style={{
                 display: "grid",
                 gridTemplateColumns: "1fr",
@@ -290,7 +301,7 @@ const ResumeUpload = () => {
             >
               <div
                 style={{
-                  background: "white",
+                  background: "var(--bg-card)",
                   borderRadius: "16px",
                   padding: "24px",
                   boxShadow: "0 10px 40px rgba(0,0,0,0.08)",
@@ -312,7 +323,7 @@ const ResumeUpload = () => {
                     <li
                       key={i}
                       style={{
-                        color: "#374151",
+                        color: "var(--text-primary)",
                         fontSize: "15px",
                         marginBottom: "8px",
                         lineHeight: "1.5",
@@ -326,7 +337,7 @@ const ResumeUpload = () => {
 
               <div
                 style={{
-                  background: "white",
+                  background: "var(--bg-card)",
                   borderRadius: "16px",
                   padding: "24px",
                   boxShadow: "0 10px 40px rgba(0,0,0,0.08)",
@@ -348,7 +359,7 @@ const ResumeUpload = () => {
                     <li
                       key={i}
                       style={{
-                        color: "#374151",
+                        color: "var(--text-primary)",
                         fontSize: "15px",
                         marginBottom: "8px",
                         lineHeight: "1.5",
@@ -362,7 +373,7 @@ const ResumeUpload = () => {
 
               <div
                 style={{
-                  background: "white",
+                  background: "var(--bg-card)",
                   borderRadius: "16px",
                   padding: "24px",
                   boxShadow: "0 10px 40px rgba(0,0,0,0.08)",
@@ -384,7 +395,7 @@ const ResumeUpload = () => {
                     <li
                       key={i}
                       style={{
-                        color: "#374151",
+                        color: "var(--text-primary)",
                         fontSize: "15px",
                         marginBottom: "8px",
                         lineHeight: "1.5",
@@ -400,7 +411,7 @@ const ResumeUpload = () => {
               {analysis.missingSkills && analysis.missingSkills.length > 0 && (
                 <div
                   style={{
-                    background: "white",
+                    background: "var(--bg-card)",
                     borderRadius: "16px",
                     padding: "24px",
                     boxShadow: "0 10px 40px rgba(0,0,0,0.08)",
