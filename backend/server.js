@@ -36,11 +36,11 @@ app.use((req, res, next) => {
   next();
 });
 
-// 🔥 DEBUG 2: BODY LOGGER
-app.use((req, res, next) => {
-  console.log("📦 BODY:", req.body);
-  next();
-});
+// 🔥 DEBUG 2: BODY LOGGER (Removed for Production Security)
+// app.use((req, res, next) => {
+//   console.log("📦 BODY:", req.body);
+//   next();
+// });
 
 // 🔥 DEBUG 3: EXTRA CORS HEADERS SAFETY
 app.use((req, res, next) => {
@@ -65,56 +65,7 @@ mongoose
     console.error("❌ MongoDB error:", err);
   });
 
-// ===================== INTERVIEW SUBMIT =====================
-app.post("/api/interview/submit", async (req, res) => {
-  try {
-    const { answers, questions } = req.body;
-
-    // ✅ SCORE CALCULATION
-    const score = answers.filter((a) => a.answer.trim() !== "").length * 10;
-
-    // ✅ QUESTION-WISE FEEDBACK
-    let feedbackArray = [];
-
-    questions.forEach((q, i) => {
-      const ans = answers[i]?.answer || "";
-
-      if (ans.trim().length > 20) {
-        feedbackArray.push({
-          question: q.question,
-          remark: "Good answer",
-        });
-      } else {
-        feedbackArray.push({
-          question: q.question,
-          remark: "Too short, improve explanation",
-        });
-      }
-    });
-
-    // ✅ SAVE DATA
-    const questionList = questions.map((q) => q.question);
-    const answerList = answers.map((a) => a.answer);
-
-    const newInterview = await Interview.create({
-      score,
-      questions: questionList,
-      answers: answerList,
-    });
-
-    // ✅ FINAL RESPONSE
-    res.status(200).json({
-      data: {
-        score,
-        interviewId: newInterview._id,
-        feedbackArray,
-      },
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
-  }
-});
+// The /api/interview/submit route has been removed because it is handled by routes/interview.js
 
 // ===================== DASHBOARD =====================
 app.get("/dashboard", auth, async (req, res) => {
@@ -145,6 +96,15 @@ app.get("/api/interview/history", async (req, res) => {
 // ===================== ROOT =====================
 app.get("/", (req, res) => {
   res.send("Backend is running");
+});
+
+// ===================== GLOBAL ERROR HANDLER =====================
+app.use((err, req, res, next) => {
+  console.error("🔥 GLOBAL ERROR:", err.message);
+  res.status(err.status || 500).json({
+    success: false,
+    message: err.message || "Internal Server Error",
+  });
 });
 
 // ===================== START SERVER =====================
